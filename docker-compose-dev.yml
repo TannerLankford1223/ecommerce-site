@@ -1,1 +1,9 @@
 version: "3.9"
+services:
+  service-discovery:
+    build:
+      context: service-discovery
+    image: tannerlankford/eureka-server:latest
+    container_name: service-discovery
+    ports:
+      - "8761:8761"
