@@ -1,0 +1,25 @@
+spring:
+  security:
+    user:
+      name: ${EUREKA_USERNAME:admin}
+      password: ${EUREKA_PASSWORD:admin}
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: service-discovery
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: '*'
