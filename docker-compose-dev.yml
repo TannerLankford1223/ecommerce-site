@@ -1,9 +1,19 @@
 version: "3.9"
 services:
+  keycloak:
+    image: jboss/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
   service-discovery:
     build:
       context: service-discovery
     image: tannerlankford/eureka-server:latest
     container_name: service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
     ports:
       - "8761:8761"
