@@ -8,7 +8,6 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
-      - GATEWAY_SECRET=${GATEWAY_SECRET}
   service-discovery:
     build:
       context: service-discovery
@@ -16,5 +15,6 @@ services:
     container_name: service-discovery
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - GATEWAY_SECRET=${GATEWAY_SECRET}
     ports:
       - "8761:8761"
