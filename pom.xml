@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
-    <artifactId>Ecommerce</artifactId>
+    <artifactId>ecommerce-site</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Ecommerce</name>
-    <description>Ecommerce</description>
+    <name>ecommerce-site</name>
+    <description>ecommerce-site</description>
     <packaging>pom</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -19,6 +19,8 @@
     </properties>
     <modules>
         <module>service-discovery</module>
+        <module>ecommerce-common</module>
+        <module>product-service</module>
     </modules>
     <dependencies>
         <dependency>
