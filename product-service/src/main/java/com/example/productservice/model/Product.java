@@ -19,7 +19,7 @@ public class Product {
 
     private BigDecimal price;
 
-    private String category;
+    private Category category;
 
     private Map<String, Integer> sizes;
 }
