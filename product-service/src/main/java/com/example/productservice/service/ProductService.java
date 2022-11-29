@@ -5,6 +5,8 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface ProductService {
     Page<Product> getAllProducts();
 
@@ -14,7 +16,11 @@ public interface ProductService {
 
     Product findProductById(String productId);
 
+    Product addProduct(NewProductRequest newProductRequest);
+
     Product updateProduct(NewProductRequest newProductRequest);
 
     void deleteProduct(String productId);
+
+    List<String> getAllCategories();
 }

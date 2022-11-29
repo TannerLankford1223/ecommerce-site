@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -34,6 +36,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product addProduct(NewProductRequest newProductRequest) {
+        return null;
+    }
+
+    @Override
     public Product updateProduct(NewProductRequest newProductRequest) {
         return null;
     }
@@ -41,5 +48,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(String productId) {
 
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        return null;
     }
 }
