@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -31,23 +29,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findProductById(String productId) {
-        return Optional.empty();
+    public Product findProductById(String productId) {
+        return null;
     }
 
     @Override
-    public void addNewProduct(NewProductRequest newProductRequest) {
-
-    }
-
-    @Override
-    public void increaseInventory(String productId) {
-
-    }
-
-    @Override
-    public void decreaseInventory(String productId) {
-
+    public Product updateProduct(NewProductRequest newProductRequest) {
+        return null;
     }
 
     @Override
