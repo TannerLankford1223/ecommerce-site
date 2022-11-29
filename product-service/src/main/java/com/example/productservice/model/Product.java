@@ -1,17 +1,19 @@
 package com.example.productservice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 @Document("products")
 @NoArgsConstructor
-@Data
-public class Product {
+@AllArgsConstructor
+@Getter
+@Setter
+public class Product extends RepresentationModel<Product> {
     @Id
     private String id;
 
@@ -20,6 +22,8 @@ public class Product {
     private BigDecimal price;
 
     private Category category;
+
+    private String status;
 
     private Map<String, Integer> sizes;
 }
