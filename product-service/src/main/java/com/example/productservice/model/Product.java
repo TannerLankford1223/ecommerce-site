@@ -23,7 +23,7 @@ public class Product extends RepresentationModel<Product> {
 
     private Category category;
 
-    private String status;
+    private Status status;
 
     private Map<String, Integer> sizes;
 }
