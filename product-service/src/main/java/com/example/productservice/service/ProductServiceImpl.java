@@ -41,11 +41,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(NewProductRequest newProductRequest) {
-        return null;
-    }
-
-    @Override
     public void increaseInventory(String productId) {
 
     }

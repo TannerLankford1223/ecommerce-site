@@ -18,8 +18,6 @@ public interface ProductService {
 
     Product addProduct(NewProductRequest newProductRequest);
 
-    Product updateProduct(NewProductRequest newProductRequest);
-
     void increaseInventory(String productId);
 
     void decreaseInventory(String productId);
