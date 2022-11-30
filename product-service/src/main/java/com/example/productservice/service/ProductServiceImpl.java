@@ -46,6 +46,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void increaseInventory(String productId) {
+
+    }
+
+    @Override
+    public void decreaseInventory(String productId) {
+
+    }
+
+    @Override
     public void deleteProduct(String productId) {
 
     }

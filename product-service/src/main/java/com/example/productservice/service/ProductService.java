@@ -20,6 +20,10 @@ public interface ProductService {
 
     Product updateProduct(NewProductRequest newProductRequest);
 
+    void increaseInventory(String productId);
+
+    void decreaseInventory(String productId);
+
     void deleteProduct(String productId);
 
     List<String> getAllCategories();
