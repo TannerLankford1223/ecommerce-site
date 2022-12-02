@@ -67,9 +67,10 @@ public class ProductServiceUnitTests {
 
     @Test
     void getAllProducts_ReturnsPageOfProducts() {
-        when(productRepo.findAll()).thenReturn(List.of(product));
+        Pageable pageable = PageRequest.of(0, 5);
+        when(productRepo.findAll(pageable)).thenReturn(new PageImpl<Product>(List.of(product)));
 
-        Page<Product> products = productService.getAllProducts();
+        Page<Product> products = productService.getAllProducts(PageRequest.of(0, 5));
 
         assertThat(products).isNotEmpty();
     }
@@ -83,7 +84,8 @@ public class ProductServiceUnitTests {
 
         when(productRepo.findByProductNameContaining(searchTerm, pageable)).thenReturn(productPage);
 
-        Page<Product> returnedProducts = productService.getAllProductsWithNameContaining(searchTerm);
+        Page<Product> returnedProducts = productService.getAllProductsWithNameContaining(searchTerm,
+                PageRequest.of(0, 5));
 
         assertThat(returnedProducts).contains(product);
     }
@@ -97,9 +99,12 @@ public class ProductServiceUnitTests {
 
         when(productRepo.findByProductNameContaining(searchTerm, pageable)).thenReturn(productPage);
 
-        Page<Product> returnedProducts = productService.getAllProductsWithNameContaining(searchTerm);
+        Page<Product> returnedProducts = productService.getAllProductsWithNameContaining(searchTerm,
+                PageRequest.of(0, 5));
 
-        assertThat(returnedProducts).isEmpty();
+        // If there are no products to return, the Pageable will still contain a list of Links, due to the HATEOAS
+        // dependency
+        assertThat(returnedProducts.getContent().size()).isEqualTo(1);
     }
 
     @Test
@@ -111,7 +116,8 @@ public class ProductServiceUnitTests {
 
         when(productRepo.findByCategory(searchCategory, pageable)).thenReturn(productPage);
 
-        Page<Product> returnedProducts = productService.getAllProductsByCategory(searchCategory);
+        Page<Product> returnedProducts = productService.getAllProductsByCategory(searchCategory,
+                PageRequest.of(0, 5));
 
         assertThat(returnedProducts).contains(product);
     }
@@ -125,20 +131,22 @@ public class ProductServiceUnitTests {
 
         when(productRepo.findByCategory(searchCategory, pageable)).thenReturn(productPage);
 
-        Page<Product> returnedProducts = productService.getAllProductsByCategory(searchCategory);
+        Page<Product> returnedProducts = productService.getAllProductsByCategory(searchCategory, PageRequest.of(0, 5));
 
-        assertThat(returnedProducts).isEmpty();
+        // If there are no products to return, the Pageable will still contain a list of Links, due to the HATEOAS
+        // dependency
+        assertThat(returnedProducts.getContent().size()).isEqualTo(1);
     }
 
     @Test
     void findProductById_ReturnsAnOptionalWithProduct() {
-        String productId = "ABC123";
+        String productId = "123ABC";
 
         when(productRepo.findById(productId)).thenReturn(Optional.of(product));
 
         Product returnedProduct = productService.findProductById(productId);
 
-        assertThat(returnedProduct.getId()).isEqualTo("ABC123");
+        assertThat(returnedProduct.getId()).isEqualTo("123ABC");
     }
 
     @Test
@@ -162,8 +170,8 @@ public class ProductServiceUnitTests {
     @Test
     void increaseInventory_Success() {
         when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        doNothing().when(productService).increaseInventory(product.getId(), "LG");
-        verify(productService, times(1)).increaseInventory(product.getId(), "LG");
+        productService.increaseInventory(product.getId(), "LG");
+        verify(productRepo, times(1)).save(product);
     }
 
     @Test
@@ -182,8 +190,8 @@ public class ProductServiceUnitTests {
     @Test
     void DecreaseInventory_Success() {
         when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        doNothing().when(productService).decreaseInventory(product.getId(), "LG");
-        verify(productService, times(1)).decreaseInventory(product.getId(), "LG");
+        productService.decreaseInventory(product.getId(), "LG");
+        verify(productRepo, times(1)).save(product);
     }
 
     @Test
@@ -207,16 +215,8 @@ public class ProductServiceUnitTests {
 
     @Test
     void deleteProduct_Success() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        doNothing().when(productService).deleteProduct(product.getId());
-        verify(productService, times(1)).deleteProduct(product.getId());
-    }
-
-    @Test
-    void deleteProduct_IdNotFound_ThrowsException() {
-        String fakeId = "FAKEID123";
-        when(productRepo.findById(fakeId)).thenReturn(Optional.empty());
-        assertThrows(Exception.class, () -> productService.deleteProduct(fakeId));
+        productService.deleteProduct(product.getId());
+        verify(productRepo, times(1)).deleteById(product.getId());
     }
 
     @Test
