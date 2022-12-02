@@ -1,5 +1,6 @@
 package com.example.productservice.persistence;
 
+import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ProductRepository extends MongoRepository<Product, String> {
     Page<Product> findByProductNameContaining(@RequestParam("product_name") String productName, Pageable pageable);
 
-    Page<Product> findByCategory(@RequestParam("category") String category, Pageable pageable);
+    Page<Product> findByCategory(@RequestParam("category") Category category, Pageable pageable);
 }
