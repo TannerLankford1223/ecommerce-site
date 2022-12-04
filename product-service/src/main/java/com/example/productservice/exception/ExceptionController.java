@@ -1,8 +1,6 @@
 package com.example.productservice.exception;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +21,6 @@ import java.util.Map;
 @ControllerAdvice
 @AllArgsConstructor
 public class ExceptionController extends ResponseEntityExceptionHandler {
-    private final Tracer tracer;
 
     @ExceptionHandler(InvalidIdException.class)
     public ResponseEntity<Object> handleInvalidIdException( RuntimeException ex, WebRequest req) {
@@ -31,19 +28,6 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
 
-        reportErrorSpan(ex.getMessage());
-
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-
-
-    private void reportErrorSpan(String message) {
-        if (tracer != null) {
-            Span span = tracer.currentSpan();
-            if (span != null) {
-                span.event("ERROR: " + message);
-                tracer.currentSpan().tag("error", message);
-            }
-        }
     }
 }
