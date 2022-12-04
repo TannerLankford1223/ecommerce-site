@@ -19,7 +19,7 @@ public class ExtractJWT {
      * @return String OR Null Method returns the requested info extracted from the token, if it exists, otherwise it
      * returns null.
      */
-    public String payloadJwtExtraction(String token, String extraction) {
+    public static String payloadJwtExtraction(String token, String extraction) {
         String replacedToken = token.replace("Bearer", "");
 
         String[] tokenSections = token.split("\\.");
