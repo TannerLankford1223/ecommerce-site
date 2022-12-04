@@ -32,16 +32,21 @@ public class ProductController {
     }
 
     @GetMapping("/findByNameContaining")
-    public PagedModel<ProductModel> getAllWithNameContaining(@RequestParam String searchTerm,
+    public PagedModel<ProductModel> getAllWithNameContaining(@RequestParam(name = "query") String searchTerm,
                                                              @RequestParam(defaultValue = "0") int page,
                                                              @RequestParam(defaultValue = "10") int size) {
         return null;
     }
 
     @GetMapping("/findByCategory")
-    public PagedModel<ProductModel> getAllByCategory(@RequestParam Category category,
+    public PagedModel<ProductModel> getAllByCategory(@RequestParam(name = "cat") Category category,
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size) {
+        return null;
+    }
+
+    @GetMapping("/{productId}")
+    public ProductModel getProduct(@PathVariable("productId") long productId) {
         return null;
     }
 
