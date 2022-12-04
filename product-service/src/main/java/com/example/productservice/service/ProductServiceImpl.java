@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findProductById(long productId) {
+    public Product getProductById(long productId) {
         Optional<Product> productOpt = productRepo.findById(productId);
 
         if (productOpt.isEmpty()) {

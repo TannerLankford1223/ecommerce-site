@@ -15,7 +15,7 @@ public interface ProductService {
 
     Page<Product> getAllProductsByCategory(Category category, Pageable pageable);
 
-    Product findProductById(long productId);
+    Product getProductById(long productId);
 
     void addProduct(NewProductRequest newProductRequest);
 
