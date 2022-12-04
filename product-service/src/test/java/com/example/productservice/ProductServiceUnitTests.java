@@ -3,13 +3,11 @@ package com.example.productservice;
 import com.example.productservice.dto.NewProductRequest;
 import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
-import com.example.productservice.model.Status;
 import com.example.productservice.persistence.ProductRepository;
-import com.example.productservice.service.ProductService;
 import com.example.productservice.service.ProductServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
@@ -19,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,38 +29,21 @@ public class ProductServiceUnitTests {
     @Mock
     private ProductRepository productRepo;
 
-    private ProductService productService;
+    @InjectMocks
+    private ProductServiceImpl productService;
 
-    private Product product;
+    long productId = 1;
+    String productName = "NewTestProduct";
+    BigDecimal price = BigDecimal.valueOf(20.00);
+    Category category = Category.SHIRTS;
 
-    private NewProductRequest newProductRequest;
+    private final Product product = new Product(productId, productName, price, category);
 
-    @BeforeEach
-    void initUseCase() {
-        productService = new ProductServiceImpl(productRepo);
-
-        String productId = "ABC123";
-        String productName = "NewTestProduct";
-        BigDecimal price = BigDecimal.valueOf(20.00);
-        Category category = Category.SHIRTS;
-        Status status = Status.IN_STOCK;
-        HashMap<String, Integer> sizes = new HashMap<>();
-        sizes.put("X-SM", 2);
-        sizes.put("SM", 5);
-        sizes.put("M", 3);
-        sizes.put("LG", 1);
-        sizes.put("X-LG", 0);
-
-        newProductRequest = NewProductRequest.builder()
-                .productName(productName)
-                .price(price)
-                .category(category)
-                .status(status)
-                .sizes(sizes)
-                .build();
-        product = new Product("123ABC", "NewTestProduct", BigDecimal.valueOf(20.00), Category.SHIRTS,
-                Status.IN_STOCK, sizes);
-    }
+    private final NewProductRequest newProductRequest = NewProductRequest.builder()
+            .productName(productName)
+            .price(price)
+            .category(category)
+            .build();
 
     @Test
     void getAllProducts_ReturnsPageOfProducts() {
@@ -139,19 +119,17 @@ public class ProductServiceUnitTests {
     }
 
     @Test
-    void findProductById_ReturnsAnOptionalWithProduct() {
-        String productId = "123ABC";
+    void findProductById_ReturnsTheProduct() {
+        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
 
-        when(productRepo.findById(productId)).thenReturn(Optional.of(product));
+        Product returnedProduct = productService.findProductById(product.getId());
 
-        Product returnedProduct = productService.findProductById(productId);
-
-        assertThat(returnedProduct.getId()).isEqualTo("123ABC");
+        assertThat(returnedProduct.getId()).isEqualTo(1);
     }
 
     @Test
     void findProductById_IdNotFound_ThrowsAnException() {
-        String productId = "FAKE543";
+        long productId = 500;
 
         when(productRepo.findById(productId)).thenReturn(Optional.empty());
 
@@ -160,57 +138,8 @@ public class ProductServiceUnitTests {
 
     @Test
     void addNewProduct_AddedSuccessfully() {
-        when(productRepo.save(product)).thenReturn(product);
-
-        Product savedProduct = productService.addProduct(newProductRequest);
-
-        assertThat(savedProduct.getProductName()).isEqualTo(product.getProductName());
-    }
-
-    @Test
-    void increaseInventory_Success() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        productService.increaseInventory(product.getId(), "LG");
-        verify(productRepo, times(1)).save(product);
-    }
-
-    @Test
-    void increaseInventory_IdNotFound_ThrowsException() {
-        String fakeId = "FAKEID123";
-        when(productRepo.findById(fakeId)).thenReturn(Optional.empty());
-        assertThrows(Exception.class, () -> productService.increaseInventory(fakeId, "SM"));
-    }
-
-    @Test
-    void increaseInventory_InvalidSize_ThrowsException() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        assertThrows(Exception.class, () -> productService.increaseInventory(product.getId(), "FAKE-SIZE"));
-    }
-
-    @Test
-    void DecreaseInventory_Success() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        productService.decreaseInventory(product.getId(), "LG");
-        verify(productRepo, times(1)).save(product);
-    }
-
-    @Test
-    void decreaseInventory_IdNotFound_ThrowsException() {
-        String fakeId = "FAKEID123";
-        when(productRepo.findById(fakeId)).thenReturn(Optional.empty());
-        assertThrows(Exception.class, () -> productService.decreaseInventory(fakeId, "SM"));
-    }
-
-    @Test
-    void decreaseInventory_NoInventory_ThrowsException() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        assertThrows(Exception.class, () -> productService.decreaseInventory(product.getId(), "X-LG"));
-    }
-
-    @Test
-    void decreaseInventory_InvalidSize_ThrowsException() {
-        when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
-        assertThrows(Exception.class, () -> productService.decreaseInventory(product.getId(), "FAKE-SIZE"));
+        productService.addProduct(newProductRequest);
+        verify(productRepo, times(1)).save(any());
     }
 
     @Test
@@ -222,7 +151,7 @@ public class ProductServiceUnitTests {
     @Test
     void getAllCategories_ReturnsAListOfCategories() {
         List<String> categories = new ArrayList<>();
-        for (Category category: Category.values()) {
+        for (Category category : Category.values()) {
             categories.add(category.toString());
         }
 

@@ -5,19 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Map;
 
-@Document(value = "products")
+@Entity
+@Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Product {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String productName;
 
@@ -25,16 +29,9 @@ public class Product {
 
     private Category category;
 
-    private Status status;
-
-    private Map<String, Integer> sizes;
-
-    public Product(String productName, BigDecimal price, Category category,
-                   Status status, Map<String, Integer> sizes) {
+    public Product(String productName, BigDecimal price, Category category) {
         this.productName = productName;
         this.price = price;
         this.category = category;
-        this.status = status;
-        this.sizes = sizes;
     }
 }

@@ -1,9 +1,7 @@
 package com.example.productservice.service;
 
 import com.example.productservice.dto.NewProductRequest;
-import com.example.productservice.exception.InsufficientInventoryException;
 import com.example.productservice.exception.InvalidIdException;
-import com.example.productservice.exception.InvalidSizeException;
 import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.persistence.ProductRepository;
@@ -40,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findProductById(String productId) {
+    public Product findProductById(long productId) {
         Optional<Product> productOpt = productRepo.findById(productId);
 
         if (productOpt.isEmpty()) {
@@ -51,61 +49,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(NewProductRequest newProductRequest) {
+    public void addProduct(NewProductRequest newProductRequest) {
         Product newProduct = new Product(newProductRequest.getProductName(),
                 newProductRequest.getPrice(),
-                newProductRequest.getCategory(),
-                newProductRequest.getStatus(),
-                newProductRequest.getSizes());
+                newProductRequest.getCategory());
 
-        return productRepo.save(newProduct);
+        productRepo.save(newProduct);
+
+        // TODO: Send message to inventory-service via RabbitMQ
     }
 
     @Override
-    public void increaseInventory(String productId, String size) {
-        Optional<Product> productOpt = productRepo.findById(productId);
-
-        if (productOpt.isEmpty()) {
-            throw new InvalidIdException(productId);
-        }
-
-        Product product = productOpt.get();
-        if (!product.getSizes().containsKey(size)) {
-            throw new InvalidSizeException(productId, size);
-        }
-
-        int initialSize = product.getSizes().get(size);
-        product.getSizes().put(size, initialSize + 1);
-
-        productRepo.save(product);
-    }
-
-    @Override
-    public void decreaseInventory(String productId, String size) {
-        Optional<Product> productOpt = productRepo.findById(productId);
-
-        if (productOpt.isEmpty()) {
-            throw new InvalidIdException(productId);
-        }
-
-        Product product = productOpt.get();
-        if (!product.getSizes().containsKey(size)) {
-            throw new InvalidSizeException(productId, size);
-        }
-
-        if (product.getSizes().get(size) <= 0) {
-            throw new InsufficientInventoryException(productId, size);
-        }
-
-        int initialSize = product.getSizes().get(size);
-        product.getSizes().put(size, initialSize - 1);
-
-        productRepo.save(product);
-    }
-
-    @Override
-    public void deleteProduct(String productId) {
+    public void deleteProduct(long productId) {
         productRepo.deleteById(productId);
+
+        // TODO: Send message to inventory-service via RabbitMQ
     }
 
     @Override

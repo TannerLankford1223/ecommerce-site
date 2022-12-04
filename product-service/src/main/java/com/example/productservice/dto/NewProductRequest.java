@@ -1,7 +1,6 @@
 package com.example.productservice.dto;
 
 import com.example.productservice.model.Category;
-import com.example.productservice.model.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,8 +15,6 @@ public class NewProductRequest {
     private BigDecimal price;
 
     private Category category;
-
-    private Status status;
 
     private Map<String, Integer> sizes;
 }

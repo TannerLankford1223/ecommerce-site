@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 /**
  * The ProductModel class extends the HATEOAS Representation Model and is required to convert the Product entity to a
@@ -24,8 +23,4 @@ public class ProductModel extends RepresentationModel<ProductModel> {
     private BigDecimal price;
 
     private Category category;
-
-    private Status status;
-
-    private Map<String, Integer> sizes;
 }

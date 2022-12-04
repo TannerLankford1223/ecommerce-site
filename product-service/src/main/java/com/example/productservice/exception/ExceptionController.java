@@ -25,8 +25,7 @@ import java.util.Map;
 public class ExceptionController extends ResponseEntityExceptionHandler {
     private final Tracer tracer;
 
-    @ExceptionHandler( value = { InvalidIdException.class, InvalidSizeException.class,
-            InsufficientInventoryException.class })
+    @ExceptionHandler(InvalidIdException.class)
     public ResponseEntity<Object> handleInvalidIdException( RuntimeException ex, WebRequest req) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

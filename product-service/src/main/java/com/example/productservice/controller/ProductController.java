@@ -51,20 +51,6 @@ public class ProductController {
         return null;
     }
 
-    @PutMapping("/secure/inventory/{productId}/increase")
-    public ResponseEntity<String> increaseInventory(@RequestHeader(value = "Authorization") String token,
-                                                    @PathVariable("productId") String productId,
-                                                    @RequestParam String size) {
-        return null;
-    }
-
-    @PutMapping("/secure/inventory/{productId}/decrease")
-    public ResponseEntity<String> decreaseInventory(@RequestHeader(value = "Authorization") String token,
-                                                    @PathVariable("productId") String productId,
-                                                    @RequestParam String size) {
-        return null;
-    }
-
     @DeleteMapping("/secure/{productId}/delete")
     public ResponseEntity<String> deleteProduct(@RequestHeader(value = "Authorization") String token,
                                                 @PathVariable("productId") String productId) {

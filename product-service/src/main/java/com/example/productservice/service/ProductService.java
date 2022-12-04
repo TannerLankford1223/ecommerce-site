@@ -15,15 +15,11 @@ public interface ProductService {
 
     Page<Product> getAllProductsByCategory(Category category, Pageable pageable);
 
-    Product findProductById(String productId);
+    Product findProductById(long productId);
 
-    Product addProduct(NewProductRequest newProductRequest);
+    void addProduct(NewProductRequest newProductRequest);
 
-    void increaseInventory(String productId, String size);
-
-    void decreaseInventory(String productId, String size);
-
-    void deleteProduct(String productId);
+    void deleteProduct(long productId);
 
     List<String> getAllCategories();
 }
