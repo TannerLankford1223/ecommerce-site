@@ -122,7 +122,7 @@ public class ProductServiceUnitTests {
     void findProductById_ReturnsTheProduct() {
         when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
 
-        Product returnedProduct = productService.findProductById(product.getId());
+        Product returnedProduct = productService.getProductById(product.getId());
 
         assertThat(returnedProduct.getId()).isEqualTo(1);
     }
@@ -133,7 +133,7 @@ public class ProductServiceUnitTests {
 
         when(productRepo.findById(productId)).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () -> productService.findProductById(productId));
+        assertThrows(Exception.class, () -> productService.getProductById(productId));
     }
 
     @Test
