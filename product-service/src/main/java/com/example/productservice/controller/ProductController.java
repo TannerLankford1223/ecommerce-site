@@ -5,7 +5,7 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.model.ProductModel;
 import com.example.productservice.model.ProductModelAssembler;
-import com.example.productservice.persistence.ProductRepository;
+import com.example.productservice.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 @AllArgsConstructor
 public class ProductController {
-    private final ProductRepository productRepo;
+    private final ProductService productRepo;
 
     private final ProductModelAssembler productModelAssembler;
 
