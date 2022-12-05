@@ -48,12 +48,6 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<!-- Okta -->
-		<dependency>
-			<groupId>com.okta.spring</groupId>
-			<artifactId>okta-spring-boot-starter</artifactId>
-			<version>${okta.version}</version>
-		</dependency>
 		<!-- Swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>
