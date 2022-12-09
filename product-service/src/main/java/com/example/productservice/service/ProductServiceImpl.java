@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
                 newProductRequest.getPrice(),
                 categoryOpt.get());
 
+        categoryOpt.get().addProduct(newProduct);
         productRepo.save(newProduct);
 
         // TODO: Send message to inventory-service via RabbitMQ
