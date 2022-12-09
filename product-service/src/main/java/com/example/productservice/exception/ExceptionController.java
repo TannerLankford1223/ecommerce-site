@@ -22,8 +22,8 @@ import java.util.Map;
 @AllArgsConstructor
 public class ExceptionController extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(InvalidIdException.class)
-    public ResponseEntity<Object> handleInvalidIdException( RuntimeException ex, WebRequest req) {
+    @ExceptionHandler(value = { CategoryNotFoundException.class, InvalidIdException.class, Exception.class })
+    public ResponseEntity<Object> handleException( RuntimeException ex, WebRequest req) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
