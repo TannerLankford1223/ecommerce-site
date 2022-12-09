@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class InvalidIdException extends RuntimeException {
-    public InvalidIdException(Long productId) {
-        super("Property with Id: " + productId + " not found");
+    public InvalidIdException(Long id) {
+        super("Id: " + id + " not found");
     }
 }
