@@ -8,12 +8,14 @@ import com.example.productservice.model.Product;
 import com.example.productservice.persistence.CategoryRepository;
 import com.example.productservice.persistence.ProductRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepo;
     private final CategoryRepository categoryRepo;
@@ -33,6 +35,8 @@ public class ProductServiceImpl implements ProductService {
         categoryOpt.get().addProduct(newProduct);
         productRepo.save(newProduct);
 
+        log.info("New Product: " + newProduct.getProductName() + " created.");
+
         // TODO: Send message to inventory-service via RabbitMQ
     }
 
@@ -45,6 +49,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepo.deleteById(productId);
+
+        log.info("Product with ID: " + productId + " deleted.");
 
         // TODO: Send message to inventory-service via RabbitMQ
     }
