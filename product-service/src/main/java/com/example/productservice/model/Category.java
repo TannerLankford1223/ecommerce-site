@@ -25,6 +25,10 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public void addProduct(Product product) {
         product.setCategory(this);
         products.add(product);
