@@ -1,4 +1,7 @@
 version: "3.9"
+
+# This Docker-Compose file creates databases for each service as well as the service discovery, and exposes
+# them, so they can be used by locally ran instances of the backend services for development.
 services:
   service-discovery:
     build:
@@ -7,6 +10,20 @@ services:
     container_name: service-discovery
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - GATEWAY_SECRET=${GATEWAY_SECRET}
     ports:
       - "8761:8761"
+  products-service-db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: product
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data-dev:/var/lib/postgresql/data/
+
+
+volumes:
+  db-data-dev:
+    driver: local
