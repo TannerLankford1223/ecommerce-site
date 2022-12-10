@@ -1,0 +1,44 @@
+# Build-time container
+FROM openjdk:17-jdk-slim AS Java-Builder
+
+WORKDIR /app/
+
+# Copy files that effect dependencies
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+# Download dependencies into this layer
+RUN ./mvnw dependency:go-offline
+
+# Copy the source, which doesn't effect the dependencies, and build
+COPY src src
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+
+# Add a non-root user
+RUN adduser --system --home /var/cache/bootapp --shell /sbin/nologin bootapp;
+
+# Download golang for running health checks in the distroless containers
+FROM golang:1.20 AS GoLang-Builder
+WORKDIR /go/src/app
+COPY cmd cmd
+RUN go install -v ./...
+
+# Run-time container
+FROM gcr.io/distroless/java:17
+
+COPY --from=GoLang-Builder /go/bin/healthcheck /app/healthcheck
+HEALTHCHECK --start-period=120s CMD ["/app/healthcheck"]
+
+COPY --from=Java-Builder /etc/passwd /etc/shadow /etc/
+ARG DEPENDENCY=/app/target/dependency
+# Application dependencies
+COPY --from=Java-Builder ${DEPENDENCY}/BOOT-INF/lib /app/lib
+# Application metadata
+COPY --from=Java-Builder ${DEPENDENCY}/META-INF /app/META-INF
+# Application classes
+COPY --from=Java-Builder ${DEPENDENCY}/BOOT-INF/classes /app
+
+USER bootapp
+ENV _JAVA_OPTIONS "-XX:MaxRAMPercentage=90 -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8"
+ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.example.productservice.ProductServiceApplication"]
+
