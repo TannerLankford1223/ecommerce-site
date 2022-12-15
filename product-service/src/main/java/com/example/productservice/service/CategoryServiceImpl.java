@@ -7,12 +7,22 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Slf4j
+
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepo;
 
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepo.findAll();
+    }
+
+    @Transactional
     @Override
     public void addCategory(String categoryName) {
         Category newCategory = new Category(categoryName);
@@ -21,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("New Category: " + categoryName + " created.");
     }
 
+    @Transactional
     @Override
     public void deleteCategory(long categoryId) {
         boolean categoryExists = categoryRepo.existsById(categoryId);
