@@ -1,0 +1,7 @@
+server:
+  shutdown: graceful
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://product-service-db:5432/product
