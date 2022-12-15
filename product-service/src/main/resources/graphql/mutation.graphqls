@@ -1,0 +1,10 @@
+type Mutation {
+    # Add a new product
+    addProduct(productName: String, price: Float, category: String): Product
+    # Delete a product
+    deleteProduct(productId: ID): ID
+    # Add a new category
+    addCategory(categoryName: String): ID
+    # Delete a category
+    deleteCategory(categoryId: ID): ID
+}
