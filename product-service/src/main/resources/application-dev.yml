@@ -25,3 +25,6 @@ okta:
   oauth2:
     client-id: ${ENV_OKTA_CLIENT_ID}
     issuer: ${ENV_OKTA_ISSUER_URL}
+
+voyager:
+  enabled: true
