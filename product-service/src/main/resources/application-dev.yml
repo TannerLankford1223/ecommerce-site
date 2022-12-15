@@ -8,9 +8,11 @@ spring:
     url: jdbc:postgresql://product-service-db:5432/product
     username: username
     password: password
-  graphql:
-    graphiql:
-      enabled: true
+
+graphql:
+  servlet:
+    max-query-depth: 5
+
   jpa:
     properties:
       hibernate:
