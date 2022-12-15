@@ -18,17 +18,14 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <ecommerce-common.version>0.0.1-SNAPSHOT</ecommerce-common.version>
         <swagger.version>2.6.1</swagger.version>
+        <dotenv.version>2.3.1</dotenv.version>
+        <h2.version>2.1.214</h2.version>
     </properties>
     <dependencies>
         <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>2.0.0.RELEASE</version>
         </dependency>
         <!-- Postgres -->
         <dependency>
@@ -47,10 +44,22 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- DotEnv -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>${dotenv.version}</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
