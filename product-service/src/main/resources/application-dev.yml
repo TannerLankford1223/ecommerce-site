@@ -1,7 +1,22 @@
 server:
   shutdown: graceful
+  port: 9000
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://product-service-db:5432/product
+    username: username
+    password: password
+  graphql:
+    graphiql:
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+okta:
+  oauth2:
+    client-id: ${ENV_OKTA_CLIENT_ID}
+    issuer: ${ENV_OKTA_ISSUER_URL}
