@@ -20,6 +20,7 @@
 		<spring-boot.version>2.7.5</spring-boot.version>
 		<graphql-tools.version>13.0.2</graphql-tools.version>
 		<graphql.version>14.1.0</graphql.version>
+		<graphql-playground.version>11.1.0</graphql-playground.version>
 	</properties>
 	<dependencies>
 		<!-- Spring Dependencies -->
@@ -64,6 +65,11 @@
 			<groupId>com.graphql-java-kickstart</groupId>
 			<artifactId>graphql-java-tools</artifactId>
 			<version>${graphql-tools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>playground-spring-boot-starter</artifactId>
+			<version>${graphql-playground.version}</version>
 		</dependency>
 		<!-- Okta -->
 <!--		<dependency>-->
