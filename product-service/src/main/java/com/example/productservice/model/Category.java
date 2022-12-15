@@ -18,14 +18,22 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
+    @Column(name = "category_name")
     private String categoryName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+    @Column(name = "products")
     private List<Product> products = new ArrayList<>();
 
     public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Category(long id, String categoryName) {
+        this.id = id;
         this.categoryName = categoryName;
     }
 
