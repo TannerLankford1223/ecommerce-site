@@ -1,5 +1,6 @@
 package com.example.productservice.exception;
 
+import graphql.GraphQLException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ import java.util.Map;
 @AllArgsConstructor
 public class ExceptionController extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = { CategoryNotFoundException.class, InvalidIdException.class, Exception.class })
+    @ExceptionHandler(value = { CategoryNotFoundException.class, InvalidIdException.class,
+            GraphQLException.class, Exception.class })
     public ResponseEntity<Object> handleException( RuntimeException ex, WebRequest req) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
