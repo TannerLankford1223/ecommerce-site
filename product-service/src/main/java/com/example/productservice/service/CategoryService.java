@@ -7,7 +7,7 @@ import java.util.List;
 public interface CategoryService {
     List<Category> getAllCategories();
 
-    void addCategory(String categoryName);
+    Category addCategory(String categoryName);
 
-    void deleteCategory(long categoryId);
+    long deleteCategory(long categoryId);
 }

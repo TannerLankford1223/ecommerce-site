@@ -24,16 +24,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public void addCategory(String categoryName) {
+    public Category addCategory(String categoryName) {
         Category newCategory = new Category(categoryName);
-        categoryRepo.save(newCategory);
+        Category response =  categoryRepo.save(newCategory);
 
         log.info("New Category: " + categoryName + " created.");
+
+        return response;
     }
 
     @Transactional
     @Override
-    public void deleteCategory(long categoryId) {
+    public long deleteCategory(long categoryId) {
         boolean categoryExists = categoryRepo.existsById(categoryId);
 
         if (!categoryExists) {
@@ -43,5 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepo.deleteById(categoryId);
 
         log.info("Category with ID: " + categoryId + " deleted.");
+
+        return categoryId;
     }
 }
