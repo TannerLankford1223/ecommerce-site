@@ -12,6 +12,7 @@ spring:
 graphql:
   servlet:
     max-query-depth: 100
+    exception-handlers-enabled: true
   playground:
     headers:
       Authorization: Bearer TOKEN
