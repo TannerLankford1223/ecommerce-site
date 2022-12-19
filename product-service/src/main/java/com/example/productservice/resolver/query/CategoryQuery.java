@@ -1,4 +1,4 @@
-package com.example.productservice.resolver;
+package com.example.productservice.resolver.query;
 
 import com.example.productservice.model.Category;
 import com.example.productservice.service.CategoryService;

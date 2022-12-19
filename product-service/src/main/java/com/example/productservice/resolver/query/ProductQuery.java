@@ -1,4 +1,4 @@
-package com.example.productservice.resolver;
+package com.example.productservice.resolver.query;
 
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.model.Product;
