@@ -42,9 +42,12 @@ public class ProductServiceUnitTests {
     private final Category pantsCategory = new Category(2L, "Pants");
     private final Category jacketCategory = new Category(3L, "Jacket");
 
-    private final Product shirt = new Product(1L, "Shirt", BigDecimal.valueOf(20.00), shirtCategory);
-    private final Product pants = new Product(2L, "Pants", BigDecimal.valueOf(34.99), pantsCategory);
-    private final Product jacket = new Product (3L, "Jacket", BigDecimal.valueOf(50.00), jacketCategory);
+    private final Product shirt = new Product(1L, "Shirt", BigDecimal.valueOf(20.00),
+            "a shirt", shirtCategory);
+    private final Product pants = new Product(2L, "Pants", BigDecimal.valueOf(34.99),
+            "a pair of pants", pantsCategory);
+    private final Product jacket = new Product (3L, "Jacket", BigDecimal.valueOf(50.00),
+            "a jacket", jacketCategory);
 
     @Test
     void getProducts_NoSearchTermOrCategory_ReturnsAllProductsAsPageable() {
@@ -108,7 +111,8 @@ public class ProductServiceUnitTests {
     @Test
     void addNewProduct_AddedSuccessfully() {
         String categoryName = "Shirts";
-        Product savedProduct = new Product(5L, "NewProduct", BigDecimal.valueOf(24.99), shirtCategory);
+        Product savedProduct = new Product(5L, "NewProduct", BigDecimal.valueOf(24.99)
+                , "a new product", shirtCategory);
         when(categoryRepo.findByCategoryName(categoryName)).thenReturn(Optional.of(shirtCategory));
         when (productRepo.save(any())).thenReturn(savedProduct);
 
