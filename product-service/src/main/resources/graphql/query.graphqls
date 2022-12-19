@@ -1,6 +1,6 @@
 type Query {
     # Return all products limited by search term, category, page, and size
-    allProducts(searchTerm: String, category: String, page: Int, size: Int): [Product]
+    allProducts(search: search): [Product]
     # Return a product with matching Id
     productById(productId: ID): Product
     # Return all categories

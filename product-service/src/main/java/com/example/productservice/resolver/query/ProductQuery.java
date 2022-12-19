@@ -15,9 +15,8 @@ import org.springframework.stereotype.Component;
 public class ProductQuery implements GraphQLQueryResolver {
     private final ProductService productService;
 
-    public Page<Product> allProducts(String searchTerm, String category, int page, int size) {
-        SearchRequest request = new SearchRequest(searchTerm, category, page, size);
-        return productService.getProducts(request);
+    public Page<Product> allProducts(SearchRequest search) {
+        return productService.getProducts(search);
     }
 
     public Product productById(long productId) {
