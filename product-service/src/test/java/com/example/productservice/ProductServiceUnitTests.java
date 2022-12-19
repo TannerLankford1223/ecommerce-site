@@ -1,5 +1,6 @@
 package com.example.productservice;
 
+import com.example.productservice.dto.NewProduct;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
 import com.example.productservice.exception.InvalidIdException;
@@ -111,12 +112,15 @@ public class ProductServiceUnitTests {
     @Test
     void addNewProduct_AddedSuccessfully() {
         String categoryName = "Shirts";
-        Product savedProduct = new Product(5L, "NewProduct", BigDecimal.valueOf(24.99)
-                , "a new product", shirtCategory);
+        NewProduct newProduct = new NewProduct("NewProduct", BigDecimal.valueOf(24.99),
+                "a new product", categoryName);
+        Product savedProduct = new Product(5L, "NewProduct", BigDecimal.valueOf(24.99),
+                "a new product", shirtCategory);
+
         when(categoryRepo.findByCategoryName(categoryName)).thenReturn(Optional.of(shirtCategory));
         when (productRepo.save(any())).thenReturn(savedProduct);
 
-        productService.addProduct("NewProduct", BigDecimal.valueOf(24.99), categoryName);
+        productService.addProduct(newProduct);
 
         verify(productRepo, times(1)).save(any());
     }
@@ -124,11 +128,11 @@ public class ProductServiceUnitTests {
     @Test
     void addNewProduct_CategoryNonExistent_ThrowsException() {
         String fakeCategory = "Fake";
-
+        NewProduct newProduct = new NewProduct("Fake", BigDecimal.valueOf(100.00),
+                "a fake product", fakeCategory);
         when(categoryRepo.findByCategoryName(fakeCategory)).thenReturn(Optional.empty());
 
-        assertThrows(CategoryNotFoundException.class, () -> productService.addProduct("NewProduct",
-                BigDecimal.valueOf(39.99), "Fake"));
+        assertThrows(CategoryNotFoundException.class, () -> productService.addProduct(newProduct));
     }
 
     @Test
