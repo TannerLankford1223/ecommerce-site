@@ -1,5 +1,6 @@
 package com.example.productservice.service;
 
+import com.example.productservice.dto.NewProduct;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
 import com.example.productservice.exception.InvalidIdException;
@@ -16,7 +17,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -66,14 +66,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product addProduct(String productName, BigDecimal price, String category) {
-        Optional<Category> categoryOpt = categoryRepo.findByCategoryName(category);
+    public Product addProduct(NewProduct newProduct) {
+        String categoryName = newProduct.getCategory();
+        Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
 
         if (categoryOpt.isEmpty()) {
-            throw new CategoryNotFoundException(category);
+            throw new CategoryNotFoundException(categoryName);
         }
 
-        Product savedProduct = productRepo.save(new Product(productName, price, categoryOpt.get()));
+        Product savedProduct = productRepo.save(new Product(newProduct.getProductName(), newProduct.getPrice(),
+                newProduct.getDescription(), categoryOpt.get()));
 
         log.info("New Product: " + savedProduct.getProductName() + " created.");
 
