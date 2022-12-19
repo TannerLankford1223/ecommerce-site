@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
         if (!Objects.equals(searchTerm, "") && Objects.equals(categoryName, "")) {
+            log.info("Retrieving products that contain the term: {}", searchTerm);
             return productRepo.findByProductNameContaining(searchTerm, pageable);
         } else if (!Objects.equals(categoryName, "")) {
             Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
@@ -43,8 +44,11 @@ public class ProductServiceImpl implements ProductService {
             }
 
             if (!Objects.equals(searchTerm, "")) {
-                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm, categoryOpt.get(), pageable);
+                log.info("Retrieving products that contain the term: {} and the category {}", searchTerm, categoryName);
+                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm,
+                        categoryOpt.get(), pageable);
             } else {
+                log.info("Retrieving products with category {}", categoryName);
                 return productRepo.findByCategory(categoryOpt.get(), pageable);
             }
         }
