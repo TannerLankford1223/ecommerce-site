@@ -5,7 +5,6 @@ import com.example.productservice.model.Product;
 import com.example.productservice.service.ProductService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
