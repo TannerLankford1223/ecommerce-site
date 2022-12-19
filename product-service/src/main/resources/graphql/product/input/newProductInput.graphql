@@ -1,0 +1,6 @@
+input newProduct {
+    productName: String!
+    price: Float!
+    description: String
+    category: String!
+}
