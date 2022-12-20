@@ -6,13 +6,17 @@ import com.example.productservice.service.ProductService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 @Component
+@Validated
 @AllArgsConstructor
 public class ProductMutation implements GraphQLMutationResolver {
     private final ProductService productService;
 
-    Product addProduct(NewProduct newProduct) {
+    Product addProduct(@Valid NewProduct newProduct) {
         return productService.addProduct(newProduct);
     }
 
