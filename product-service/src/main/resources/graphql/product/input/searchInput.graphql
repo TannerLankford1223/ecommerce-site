@@ -1,6 +1,6 @@
 input search {
     searchTerm: String
     category: String
-    page: NonNegativeInt!
-    size: NonNegativeInt!
+    first: NonNegativeInt!
+    after: String!
 }

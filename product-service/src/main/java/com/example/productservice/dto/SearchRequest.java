@@ -10,19 +10,19 @@ public class SearchRequest {
 
     private String category = "";
 
-    private int page;
+    private int first;
 
-    private int size;
+    private String after;
 
 
-    public SearchRequest(int page, int size) {
-        this.page = page;
-        this.size = size;
+    public SearchRequest(int first, String after) {
+        this.first = first;
+        this.after = after;
     }
 
-    public SearchRequest(String category, int page, int size) {
+    public SearchRequest(String category, int first, String after) {
         this.category = category;
-        this.page = page;
-        this.size = size;
+        this.first = first;
+        this.after = after;
     }
 }

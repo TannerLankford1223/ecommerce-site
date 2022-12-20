@@ -9,15 +9,13 @@ import com.example.productservice.model.Product;
 import com.example.productservice.persistence.CategoryRepository;
 import com.example.productservice.persistence.ProductRepository;
 import com.example.productservice.service.ProductServiceImpl;
+import graphql.relay.Connection;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -39,74 +37,74 @@ public class ProductServiceUnitTests {
     @InjectMocks
     private ProductServiceImpl productService;
 
-    private final Category shirtCategory = new Category(1L, "Shirt");
-    private final Category pantsCategory = new Category(2L, "Pants");
-    private final Category jacketCategory = new Category(3L, "Jacket");
+    Category pantsCategory = new Category(2L, "Pants");
 
-    private final Product shirt = new Product(1L, "Shirt", BigDecimal.valueOf(20.00),
+    Category shirtCategory = new Category(1L, "Shirt");
+
+    Product shirt = new Product(1L, "Shirt", BigDecimal.valueOf(20.00),
             "a shirt", shirtCategory);
-    private final Product pants = new Product(2L, "Pants", BigDecimal.valueOf(34.99),
+
+    Product pants = new Product(2L, "Pants", BigDecimal.valueOf(34.99),
             "a pair of pants", pantsCategory);
-    private final Product jacket = new Product (3L, "Jacket", BigDecimal.valueOf(50.00),
-            "a jacket", jacketCategory);
+
+    @BeforeEach
+    public void init() {
+
+    }
 
     @Test
-    void getProducts_NoSearchTermOrCategory_ReturnsAllProductsAsPageable() {
-        SearchRequest request = new SearchRequest(0, 5);
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        List<Product> products = List.of(shirt, pants, jacket);
+    void getProducts_NoSearchTermOrCategory_ReturnsAllProductsAsConnection() {
+        SearchRequest request = new SearchRequest(5, null);
+        List<Product> products = List.of(shirt, pants);
 
-        when(productRepo.findAll(pageable)).thenReturn(new PageImpl<>(products));
+        when(productRepo.findProductsByIdAfter(0)).thenReturn(products);
 
-        Page<Product> response = productService.getProducts(request);
+        Connection<Product> response = productService.getProducts(request);
 
-        assertThat(response.getTotalElements()).isEqualTo(products.size());
+        assertThat(response.getEdges().size()).isEqualTo(products.size());
     }
 
     @Test
     void getProducts_WithSearchTerm_ReturnsPageableOfAllProductsContainingSearchTerm() {
-        SearchRequest request = new SearchRequest("Shirt", "", 0, 5);
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        SearchRequest request = new SearchRequest("Shirt", "", 5, null);
         List<Product> products = List.of(shirt);
 
-        when(productRepo.findByProductNameContaining(request.getSearchTerm(), pageable))
-                .thenReturn(new PageImpl<>(products));
+        when(productRepo.findProductsByIdAfterAndProductNameContaining(0, request.getSearchTerm()))
+                .thenReturn(products);
 
-        Page<Product> response = productService.getProducts(request);
+        Connection<Product> response = productService.getProducts(request);
 
-        assertThat(response.getSize()).isEqualTo(products.size());
-        assertThat(response.getContent().get(0)).isEqualTo(products.get(0));
+        assertThat(response.getEdges().size()).isEqualTo(products.size());
+        assertThat(response.getEdges().get(0).getNode()).isEqualTo(products.get(0));
     }
 
     @Test
     void getProducts_WithCategory_ReturnsPageableOfAllProductsInCategory() {
-        SearchRequest request = new SearchRequest( "Pants", 0, 5);
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        SearchRequest request = new SearchRequest( "Pants", 5, null);
         List<Product> products = List.of(pants);
 
         when(categoryRepo.findByCategoryName(request.getCategory())).thenReturn(Optional.of(pantsCategory));
-        when(productRepo.findByCategory(pantsCategory, pageable)).thenReturn(new PageImpl<>(products));
+        when(productRepo.findProductsByIdAfterAndCategory(0, pantsCategory)).thenReturn(products);
 
-        Page<Product> response = productService.getProducts(request);
+        Connection<Product> response = productService.getProducts(request);
 
-        assertThat(response.getSize()).isEqualTo(products.size());
-        assertThat(response.getContent().get(0)).isEqualTo(products.get(0));
+        assertThat(response.getEdges().size()).isEqualTo(products.size());
+        assertThat(response.getEdges().get(0).getNode()).isEqualTo(products.get(0));
     }
 
     @Test
     void getProducts_WithSearchTermAndCategory_ReturnsPageableOfAllProductsContainingSearchTermInCategory() {
-        SearchRequest request = new SearchRequest("Pants", "Pants", 0, 5);
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        SearchRequest request = new SearchRequest("Pants", "Pants", 5, null);
         List<Product> products = List.of(pants);
 
         when(categoryRepo.findByCategoryName(request.getCategory())).thenReturn(Optional.of(pantsCategory));
-        when(productRepo.findProductsByProductNameContainingAndCategory(request.getSearchTerm(), pantsCategory, pageable))
-                .thenReturn(new PageImpl<>(products));
+        when(productRepo.findProductsByIdAfterAndProductNameContainingAndCategory(0, request.getSearchTerm(),
+                pantsCategory)).thenReturn(products);
 
-        Page<Product> response = productService.getProducts(request);
+        Connection<Product> response = productService.getProducts(request);
 
-        assertThat(response.getNumberOfElements()).isEqualTo(products.size());
-        assertThat(response.getContent().get(0)).isEqualTo(products.get(0));
+        assertThat(response.getEdges().size()).isEqualTo(products.size());
+        assertThat(response.getEdges().get(0).getNode()).isEqualTo(products.get(0));
     }
 
     @Test

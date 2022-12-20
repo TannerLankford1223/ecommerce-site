@@ -3,10 +3,10 @@ package com.example.productservice.service;
 import com.example.productservice.dto.NewProduct;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.model.Product;
-import org.springframework.data.domain.Page;
+import graphql.relay.Connection;
 
 public interface ProductService {
-    Page<Product> getProducts(SearchRequest searchRequest);
+    Connection<Product> getProducts(SearchRequest searchRequest);
 
     Product getProductById(long productId);
 

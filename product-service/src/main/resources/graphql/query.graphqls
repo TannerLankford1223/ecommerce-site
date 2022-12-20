@@ -1,8 +1,8 @@
 scalar NonNegativeInt
 
 type Query {
-    # Return all products limited by search term, category, page, and size
-    allProducts(search: search): [Product]
+    # Return paginated products limited by search term, category.
+    allProducts(search: search): ProductConnection @connection (for: "Product")
     # Return a product with matching Id
     productById(productId: ID): Product
     # Return all categories
