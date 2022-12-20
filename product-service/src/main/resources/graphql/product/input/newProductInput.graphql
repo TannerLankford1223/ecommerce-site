@@ -1,6 +1,6 @@
 input newProduct {
     productName: String!
-    price: Float!
+    price: NonNegativeFloat!
     description: String
     category: String!
 }

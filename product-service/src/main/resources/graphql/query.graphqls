@@ -1,3 +1,5 @@
+scalar NonNegativeInt
+
 type Query {
     # Return all products limited by search term, category, page, and size
     allProducts(search: search): [Product]

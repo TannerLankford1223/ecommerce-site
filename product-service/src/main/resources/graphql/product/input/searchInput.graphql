@@ -1,6 +1,6 @@
 input search {
     searchTerm: String
     category: String
-    page: Int!
-    size: Int!
+    page: NonNegativeInt!
+    size: NonNegativeInt!
 }

@@ -1,3 +1,5 @@
+scalar NonNegativeFloat
+
 type Mutation {
     # Add a new product
     addProduct(newProduct: newProduct): Product
