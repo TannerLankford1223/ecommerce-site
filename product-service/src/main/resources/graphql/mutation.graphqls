@@ -1,12 +1,19 @@
 scalar NonNegativeFloat
 
+input NewProduct {
+    productName: String!
+    price: NonNegativeFloat!
+    description: String
+    category: String!
+}
+
 type Mutation {
     # Add a new product
-    addProduct(newProduct: newProduct): Product
+    addProduct(newProduct: NewProduct): Product
     # Delete a product
     deleteProduct(productId: ID): ID
     # Add a new category
-    addCategory(categoryName: String): ID
+    addCategory(categoryName: String!): Category
     # Delete a category
     deleteCategory(categoryId: ID): ID
 }
