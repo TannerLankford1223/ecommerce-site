@@ -1,6 +1,0 @@
-input search {
-    searchTerm: String
-    category: String
-    first: NonNegativeInt!
-    after: String!
-}

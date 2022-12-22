@@ -1,6 +1,0 @@
-input newProduct {
-    productName: String!
-    price: NonNegativeFloat!
-    description: String
-    category: String!
-}
