@@ -1,0 +1,27 @@
+{
+  "data": {
+    "allProducts": {
+      "pageInfo": {
+        "pageNumber": 0,
+        "totalCount": 1,
+        "totalPages": 0,
+        "hasNext": false,
+        "hasPrev": false,
+        "nextPage": null,
+        "prevPage": null
+      },
+      "products": [
+        {
+          "id": "8",
+          "productName": "Black Pants",
+          "price": 31.99,
+          "description": "A black pair of pants",
+          "category": {
+            "id": "2",
+            "categoryName": "Pants"
+          }
+        }
+      ]
+    }
+  }
+}

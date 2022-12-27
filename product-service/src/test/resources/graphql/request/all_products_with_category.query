@@ -1,0 +1,23 @@
+query GET_ALL_PRODUCTS_WITH_CATEGORY {
+    allProducts(search: { category: "Jackets", page: 0, size: 10 }) {
+        pageInfo {
+                pageNumber
+                totalCount
+                totalPages
+                hasNext
+                hasPrev
+                nextPage
+                prevPage
+        }
+        products {
+                id
+                productName
+                price
+                description
+                category {
+                    id
+                    categoryName
+                }
+        }
+    }
+}

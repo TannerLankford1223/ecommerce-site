@@ -1,0 +1,37 @@
+{
+  "data": {
+    "allProducts": {
+      "pageInfo": {
+        "pageNumber": 0,
+        "totalCount": 2,
+        "totalPages": 0,
+        "hasNext": false,
+        "hasPrev": false,
+        "nextPage": null,
+        "prevPage": null
+      },
+      "products": [
+        {
+          "id": "1",
+          "productName": "Grey Shirt",
+          "price": 25.0,
+          "description": "A grey shirt",
+          "category": {
+            "id": "1",
+            "categoryName": "Shirts"
+          }
+        },
+        {
+          "id": "5",
+          "productName": "Grey Pants",
+          "price": 33.0,
+          "description": "A grey pair of pants",
+          "category": {
+            "id": "2",
+            "categoryName": "Pants"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+query GET_ALL_PRODUCTS_WITH_SEARCH_TERM_AND_CATEGORY {
+    allProducts(search: { searchTerm: "Black", category: "Pants", page: 0, size: 10 }) {
+        pageInfo {
+                pageNumber
+                totalCount
+                totalPages
+                hasNext
+                hasPrev
+                nextPage
+                prevPage
+        }
+        products {
+                id
+                productName
+                price
+                description
+                category {
+                    id
+                    categoryName
+                }
+        }
+    }
+}
