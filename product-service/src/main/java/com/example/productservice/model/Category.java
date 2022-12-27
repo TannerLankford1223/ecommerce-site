@@ -1,18 +1,15 @@
 package com.example.productservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "category")
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +18,4 @@ public class Category {
 
     @Column(name = "category_name")
     private String categoryName;
-
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
 }

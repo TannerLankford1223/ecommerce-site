@@ -1,28 +1,34 @@
 package com.example.productservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Setter;
 
-@AllArgsConstructor
-@Getter
+import java.util.Optional;
+
+@Builder
+@Setter
 public class SearchRequest {
-    private String searchTerm = "";
+    private String searchTerm;
 
-    private String category = "";
+    private String category;
 
-    private int first;
+    private int page;
 
-    private String after;
+    private int size;
 
-
-    public SearchRequest(int first, String after) {
-        this.first = first;
-        this.after = after;
+    public Optional<String> getSearchTerm() {
+        return Optional.ofNullable(searchTerm);
     }
 
-    public SearchRequest(String category, int first, String after) {
-        this.category = category;
-        this.first = first;
-        this.after = after;
+    public Optional<String> getCategory() {
+        return Optional.ofNullable(category);
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
