@@ -1,4 +1,4 @@
-package com.example.productservice;
+package com.example.productservice.service;
 
 import com.example.productservice.dto.NewProduct;
 import com.example.productservice.dto.ProductSearchResult;

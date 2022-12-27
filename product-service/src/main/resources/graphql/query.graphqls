@@ -3,15 +3,30 @@ scalar NonNegativeInt
 input SearchRequest {
     searchTerm: String
     category: String
-    first: NonNegativeInt!
-    after: String!
+    page: NonNegativeInt!
+    size: NonNegativeInt!
 }
 
 type Query {
     # Return paginated products limited by search term, category.
-    allProducts(search: SearchRequest): ProductConnection @connection (for: "Product")
+    allProducts(search: SearchRequest!): ProductSearchResult
     # Return a product with matching Id
-    productById(productId: ID): Product
+    productById(productId: ID!): Product!
     # Return all categories
-    allCategories: [Category]
+    allCategories: [Category!]!
+}
+
+type PageInfo {
+    pageNumber: Int!
+    totalCount: Int!
+    totalPages: Int!
+    hasNext: Boolean!
+    hasPrev: Boolean!
+    nextPage: Int
+    prevPage: Int
+}
+
+type ProductSearchResult {
+    pageInfo: PageInfo!
+    products: [Product!]!
 }

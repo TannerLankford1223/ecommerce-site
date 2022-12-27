@@ -1,7 +1,8 @@
 package com.example.productservice.service;
 
-import com.example.productservice.connection.CursorUtil;
 import com.example.productservice.dto.NewProduct;
+import com.example.productservice.dto.PageInfo;
+import com.example.productservice.dto.ProductSearchResult;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
 import com.example.productservice.exception.InvalidIdException;
@@ -9,17 +10,16 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.persistence.CategoryRepository;
 import com.example.productservice.persistence.ProductRepository;
-import graphql.relay.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,58 +30,48 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Query(name = "allProducts")
-    public Connection<Product> getProducts(SearchRequest searchRequest) {
-        String searchTerm = searchRequest.getSearchTerm().trim();
-        String categoryName = searchRequest.getCategory().trim();
-        long offset = 0;
+    public ProductSearchResult getProducts(SearchRequest searchRequest) {
+        Pageable pageable = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
-        if (searchRequest.getAfter() != null) {
-            offset = CursorUtil.decode(searchRequest.getAfter());
-        }
+        Page<Product> productPage = fetchProducts(searchRequest.getSearchTerm(), searchRequest.getCategory(), pageable);
 
-        List<Product> products = fetchProducts(searchTerm, categoryName, offset);
+        PageInfo pageInfo = PageInfo.builder()
+                .pageNumber(productPage.getNumber())
+                .totalCount(productPage.getTotalElements())
+                .hasNext(productPage.hasNext())
+                .nextPage(productPage.hasNext() ? productPage.getNumber() + 1 : null)
+                .prevPage(productPage.hasPrevious() ? productPage.getNumber() - 1 : null)
+                .build();
 
-        return createConnection(products, searchRequest.getFirst(), offset);
+        return ProductSearchResult.builder()
+                .products(productPage.getContent())
+                .pageInfo(pageInfo)
+                .build();
     }
 
-    private List<Product> fetchProducts(String searchTerm, String categoryName, long offset) {
+    private Page<Product> fetchProducts(Optional<String> searchTerm, Optional<String> categoryName, Pageable pageable) {
 
-        if (!Objects.equals(searchTerm, "") && Objects.equals(categoryName, "")) {
-            log.info("Retrieving products that contain the term: {}", searchTerm);
-            return productRepo.findProductsByIdAfterAndProductNameContaining(offset, searchTerm);
-        } else if (!Objects.equals(categoryName, "")) {
-            Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
+        if (searchTerm.isPresent() && categoryName.isEmpty()) {
+            log.info("Retrieving products that contain the term: {}", searchTerm.get());
+            return productRepo.findByProductNameContaining(searchTerm.get(), pageable);
+        } else if (categoryName.isPresent()) {
+            Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName.get());
             if (categoryOpt.isEmpty()) {
-                throw new CategoryNotFoundException(categoryName);
+                throw new CategoryNotFoundException(categoryName.get());
             }
 
-            if (!Objects.equals(searchTerm, "")) {
-                log.info("Retrieving products that contain the term: {} and the category: {}", searchTerm, categoryName);
-                return productRepo.findProductsByIdAfterAndProductNameContainingAndCategory(offset, searchTerm,
-                        categoryOpt.get());
+            if (searchTerm.isPresent()) {
+                log.info("Retrieving products that contain the term: {} and the category: {}", searchTerm.get(),
+                        categoryName.get());
+                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm.get(), categoryOpt.get(),
+                        pageable);
             } else {
-                log.info("Retrieving products with category: {}", categoryName);
-                return productRepo.findProductsByIdAfterAndCategory(offset, categoryOpt.get());
+                log.info("Retrieving products with category: {}", categoryName.get());
+                return productRepo.findByCategory(categoryOpt.get(), pageable);
             }
         } else {
-            return productRepo.findProductsByIdAfter(offset);
+            return productRepo.findAll(pageable);
         }
-    }
-
-    private Connection<Product> createConnection(List<Product> products, int first, long cursor) {
-        List<Edge<Product>> edges = products.stream()
-                .map(product -> new DefaultEdge<>(product, CursorUtil.createCursorWith(product.getId())))
-                .limit(first)
-                .collect(Collectors.toUnmodifiableList());
-
-        PageInfo pageInfo = new DefaultPageInfo(
-                CursorUtil.getFirstCursorFrom(edges),
-                CursorUtil.getLastCursorFrom(edges),
-                cursor != 0,
-                edges.size() >= first
-        );
-
-        return new DefaultConnection<>(edges, pageInfo);
     }
 
     @Override
@@ -106,8 +96,14 @@ public class ProductServiceImpl implements ProductService {
             throw new CategoryNotFoundException(categoryName);
         }
 
-        Product savedProduct = productRepo.save(new Product(newProduct.getProductName(), newProduct.getPrice(),
-                newProduct.getDescription(), categoryOpt.get()));
+        Product createdProduct = Product.builder()
+                .productName(newProduct.getProductName())
+                .price(newProduct.getPrice())
+                .description(newProduct.getDescription())
+                .category(categoryOpt.get())
+                .build();
+
+        Product savedProduct = productRepo.save(createdProduct);
 
         log.info("New Product: " + savedProduct.getProductName() + " created.");
 

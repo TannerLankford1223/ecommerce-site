@@ -25,7 +25,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public Category addCategory(String categoryName) {
-        Category newCategory = new Category(categoryName);
+        Category newCategory = Category.builder()
+                .categoryName(categoryName)
+                .build();
+
         Category response =  categoryRepo.save(newCategory);
 
         log.info("New Category: " + categoryName + " created.");
