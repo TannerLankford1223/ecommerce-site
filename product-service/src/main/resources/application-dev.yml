@@ -8,6 +8,10 @@ spring:
     url: jdbc:postgresql://product-service-db:5432/product
     username: username
     password: password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
 
 graphql:
   servlet:
@@ -17,11 +21,7 @@ graphql:
   playground:
     headers:
       Authorization: Bearer TOKEN
-
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+  extended-scalars: NonNegativeInt, NonNegativeFloat
 
 okta:
   oauth2:
@@ -30,3 +30,7 @@ okta:
 
 voyager:
   enabled: true
+
+logging:
+  pattern:
+    console: -%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{correlation_id}){red} %m%n%wEx
