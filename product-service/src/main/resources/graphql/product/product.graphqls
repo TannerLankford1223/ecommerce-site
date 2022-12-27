@@ -2,5 +2,6 @@ type Product {
     id: ID!
     productName: String!
     price: Float!
+    description: String
     category: Category!
 }

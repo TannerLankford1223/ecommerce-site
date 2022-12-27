@@ -9,11 +9,11 @@ input NewProduct {
 
 type Mutation {
     # Add a new product
-    addProduct(newProduct: NewProduct): Product
+    addProduct(newProduct: NewProduct!): Product!
     # Delete a product
-    deleteProduct(productId: ID): ID
+    deleteProduct(productId: ID!): ID!
     # Add a new category
-    addCategory(categoryName: String!): Category
+    addCategory(categoryName: String!): Category!
     # Delete a category
-    deleteCategory(categoryId: ID): ID
+    deleteCategory(categoryId: ID!): ID!
 }
