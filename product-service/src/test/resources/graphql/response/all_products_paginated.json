@@ -1,0 +1,47 @@
+{
+  "data": {
+    "allProducts": {
+      "pageInfo": {
+        "pageNumber": 2,
+        "totalCount": 9,
+        "totalPages": 3,
+        "hasNext": false,
+        "hasPrev": true,
+        "nextPage": null,
+        "prevPage": 1
+      },
+      "products": [
+        {
+          "id": "7",
+          "productName": "Black Shirt",
+          "price": 30.5,
+          "description": "A black shirt",
+          "category": {
+            "id": "1",
+            "categoryName": "Shirts"
+          }
+        },
+        {
+          "id": "8",
+          "productName": "Black Pants",
+          "price": 31.99,
+          "description": "A black pair of pants",
+          "category": {
+            "id": "2",
+            "categoryName": "Pants"
+          }
+        },
+        {
+          "id": "9",
+          "productName": "Green Jacket",
+          "price": 43.99,
+          "description": "A green jacket",
+          "category": {
+            "id": "3",
+            "categoryName": "Jackets"
+          }
+        }
+      ]
+    }
+  }
+}

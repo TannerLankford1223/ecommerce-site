@@ -5,6 +5,7 @@ import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import io.micrometer.core.instrument.util.IOUtils;
 import org.json.JSONException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,7 @@ public class ProductQueryIntegrationTests {
     GraphQLTestTemplate graphQLTestTemplate;
 
     @Test
+    @DisplayName("Should response to query with a paginated list of all products")
     public void allProducts_ReturnsAllProducts() throws IOException, JSONException {
         String testName = "all_products";
         GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
@@ -40,6 +42,21 @@ public class ProductQueryIntegrationTests {
     }
 
     @Test
+    @DisplayName("Should respond to query with a paginated list based on page and page size")
+    public void allProducts_ReturnsPaginatedProducts() throws IOException, JSONException {
+        String testName = "all_products_paginated";
+        GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
+
+        String expectedResponseBody = readResponseFile(String.format(QUERY_RESPONSE_PATH, testName));
+
+        System.out.println(response.getRawResponse().getBody());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertEquals(expectedResponseBody, response.getRawResponse().getBody(), true);
+    }
+
+    @Test
+    @DisplayName("Should response to query with a paginated list of all products with search term")
     public void allProducts_WithSearchTerm_ReturnsAllProductsContainingSearchTerm() throws IOException, JSONException {
         String testName = "all_products_with_search_term";
         GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
@@ -51,6 +68,7 @@ public class ProductQueryIntegrationTests {
     }
 
     @Test
+    @DisplayName("Should respond to query with a paginated list of all products with category")
     public void allProducts_WithCategory_ReturnsAllProductsWithCategory() throws IOException, JSONException {
         String testName = "all_products_with_category";
         GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
@@ -62,6 +80,7 @@ public class ProductQueryIntegrationTests {
     }
 
     @Test
+    @DisplayName("Should response to query with a paginated list of all products with search term and category")
     public void allProducts_WithSearchTermAndCategory_ReturnsAllProductsContainingSearchTermAndCategory()
             throws IOException, JSONException {
         String testName = "all_products_with_search_term_and_category";
