@@ -1,0 +1,12 @@
+query GET_PRODUCT_BY_ID {
+    productById(productId: 1) {
+        id
+        productName
+        price
+        description
+        category {
+            id
+            categoryName
+        }
+    }
+}

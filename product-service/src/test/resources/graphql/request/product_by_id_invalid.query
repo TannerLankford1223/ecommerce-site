@@ -1,0 +1,12 @@
+query GET_PRODUCT_BY_ID_INVALID {
+    productById(productId: 300) {
+        id
+        productName
+        price
+        description
+        category {
+            id
+            categoryName
+        }
+    }
+}

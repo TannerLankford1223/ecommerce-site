@@ -76,7 +76,7 @@ public class ProductQueryIntegrationTests {
     }
 
     @Test
-    @DisplayName("Should response to query with a paginated list of all products with search term and category")
+    @DisplayName("Should respond to query with a paginated list of all products with search term and category")
     public void allProducts_WithSearchTermAndCategory_ReturnsAllProductsContainingSearchTermAndCategory()
             throws IOException, JSONException {
         String testName = "all_products_with_search_term_and_category";
@@ -87,4 +87,30 @@ public class ProductQueryIntegrationTests {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertEquals(expectedresponseBody, response.getRawResponse().getBody(), true);
     }
+
+    @Test
+    @DisplayName("Should respond to query with product that contains the provided ID")
+    public void productById_ReturnsProduct() throws IOException, JSONException {
+        String testName = "product_by_id";
+        GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
+
+        String expectedresponseBody = readResponseFile(String.format(QUERY_RESPONSE_PATH, testName));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertEquals(expectedresponseBody, response.getRawResponse().getBody(), true);
+    }
+
+    @Test
+    @DisplayName("Should respond to query containing an invalid id with an error")
+    public void productById_InvalidId_ReturnsError() throws IOException, JSONException {
+        String testName = "product_by_id_invalid";
+
+        GraphQLResponse response = graphQLTestTemplate.postForResource(String.format(QUERY_REQUEST_PATH, testName));
+
+        String expectedresponseBody = readResponseFile(String.format(QUERY_RESPONSE_PATH, testName));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertEquals(expectedresponseBody, response.getRawResponse().getBody(), true);
+    }
+
 }
