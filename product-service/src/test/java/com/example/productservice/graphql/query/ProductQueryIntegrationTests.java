@@ -49,8 +49,6 @@ public class ProductQueryIntegrationTests {
 
         String expectedResponseBody = readResponseFile(String.format(QUERY_RESPONSE_PATH, testName));
 
-        System.out.println(response.getRawResponse().getBody());
-
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertEquals(expectedResponseBody, response.getRawResponse().getBody(), true);
     }
