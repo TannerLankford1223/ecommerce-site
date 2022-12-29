@@ -1,0 +1,18 @@
+{
+  "data": {
+    "allCategories": [
+      {
+        "id": "1",
+        "categoryName": "Shirts"
+      },
+      {
+        "id": "2",
+        "categoryName": "Pants"
+      },
+      {
+        "id": "3",
+        "categoryName": "Jackets"
+      }
+    ]
+  }
+}
