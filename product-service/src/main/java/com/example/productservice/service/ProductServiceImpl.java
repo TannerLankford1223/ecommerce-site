@@ -6,6 +6,7 @@ import com.example.productservice.dto.ProductSearchResult;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
 import com.example.productservice.exception.InvalidIdException;
+import com.example.productservice.exception.ProductExistsException;
 import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.persistence.CategoryRepository;
@@ -91,6 +92,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Product addProduct(NewProduct newProduct) {
+        if (productRepo.existsProductByProductName(newProduct.getProductName())) {
+            throw new ProductExistsException(newProduct.getProductName());
+        }
+
         String categoryName = newProduct.getCategory();
         Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
 

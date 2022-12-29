@@ -1,5 +1,6 @@
 package com.example.productservice.service;
 
+import com.example.productservice.exception.CategoryExistsException;
 import com.example.productservice.exception.InvalidIdException;
 import com.example.productservice.model.Category;
 import com.example.productservice.persistence.CategoryRepository;
@@ -25,6 +26,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public Category addCategory(String categoryName) {
+        if (categoryRepo.existsCategoryByCategoryName(categoryName)) {
+            throw new CategoryExistsException(categoryName);
+        }
+
         Category newCategory = Category.builder()
                 .categoryName(categoryName)
                 .build();

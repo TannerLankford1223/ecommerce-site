@@ -1,9 +1,10 @@
 package com.example.productservice.service;
 
+import com.example.productservice.exception.CategoryExistsException;
 import com.example.productservice.exception.InvalidIdException;
 import com.example.productservice.model.Category;
 import com.example.productservice.persistence.CategoryRepository;
-import com.example.productservice.service.CategoryServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,7 @@ public class CategoryServiceUnitTests {
     private CategoryServiceImpl categoryService;
 
     @Test
+    @DisplayName("Should return a list of all categories")
     void getAllCategories_ReturnsAListOfCategories() {
         Category shirtCategory = new Category(1L, "Shirt");
         Category pantsCategory = new Category(2L, "Pants");
@@ -40,6 +42,7 @@ public class CategoryServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should save a new category to the database")
     void addNewCategory_AddedSuccessfully() {
         final String newCategoryName = "NewCategory";
 
@@ -48,6 +51,16 @@ public class CategoryServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should throw an error when saving duplicate product")
+    void addNewCategory_CategoryExists_ThrowsException() {
+        final String dupCategory = "Shirts";
+        when(categoryRepo.existsCategoryByCategoryName(dupCategory)).thenReturn(true);
+
+        assertThrows(CategoryExistsException.class, () -> categoryService.addCategory(dupCategory));
+    }
+
+    @Test
+    @DisplayName("Should delete a category from the database")
     void deleteProduct_Success() {
         when(categoryRepo.existsById(1L)).thenReturn(true);
         categoryService.deleteCategory(1L);
@@ -55,6 +68,7 @@ public class CategoryServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should throw an error when deleting a non-existent category")
     void deleteProduct_ProductNonExistent_ThrowsException() {
         when(categoryRepo.existsById(25L)).thenReturn(false);
 

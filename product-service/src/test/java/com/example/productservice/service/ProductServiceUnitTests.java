@@ -5,12 +5,12 @@ import com.example.productservice.dto.ProductSearchResult;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
 import com.example.productservice.exception.InvalidIdException;
+import com.example.productservice.exception.ProductExistsException;
 import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.persistence.CategoryRepository;
 import com.example.productservice.persistence.ProductRepository;
-import com.example.productservice.service.ProductServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,12 +52,8 @@ public class ProductServiceUnitTests {
 
     Pageable pageable = PageRequest.of(0, 10);
 
-    @BeforeEach
-    public void init() {
-
-    }
-
     @Test
+    @DisplayName("Should return a paginated list of products when no search term or category is specified")
     void getProducts_NoSearchTermOrCategory_ReturnsAllProductsAsConnection() {
         SearchRequest request = SearchRequest.builder()
                 .page(0)
@@ -74,6 +70,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should return a paginated list of products matching the search term")
     void getProducts_WithSearchTerm_ReturnsPageableOfAllProductsContainingSearchTerm() {
         SearchRequest request = SearchRequest.builder()
                 .searchTerm("Shirt")
@@ -93,6 +90,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should return a paginated list of all products in the category specified")
     void getProducts_WithCategory_ReturnsPageableOfAllProductsInCategory() {
         SearchRequest request = SearchRequest.builder()
                 .category("Pants")
@@ -112,6 +110,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should return a paginated list of all products containing the search term and the category specified")
     void getProducts_WithSearchTermAndCategory_ReturnsPageableOfAllProductsContainingSearchTermInCategory() {
         SearchRequest request = SearchRequest.builder()
                 .searchTerm("Pants")
@@ -133,6 +132,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should save a new product to the database")
     void addNewProduct_AddedSuccessfully() {
         String categoryName = "Shirts";
         NewProduct newProduct = NewProduct.builder()
@@ -154,6 +154,21 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should throw an error when adding a duplicate product")
+    void addNewProduct_ProductExists_ThrowsException() {
+        NewProduct dupProduct = NewProduct.builder()
+                .productName("Shirt")
+                .price(BigDecimal.valueOf(14.99))
+                .description("a new shirt")
+                .category("Shirts")
+                .build();
+        when(productRepo.existsProductByProductName(shirt.getProductName())).thenReturn(true);
+
+        assertThrows(ProductExistsException.class, () -> productService.addProduct(dupProduct));
+    }
+
+    @Test
+    @DisplayName("Should throw an error when adding a product with a non-existent category")
     void addNewProduct_CategoryNonExistent_ThrowsException() {
         String fakeCategory = "Fake";
         NewProduct newProduct = NewProduct.builder()
@@ -169,6 +184,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should successfully delete a product from the database")
     void deleteProduct_Success() {
         long id = 1L;
         when(productRepo.existsById(id)).thenReturn(true);
@@ -180,6 +196,7 @@ public class ProductServiceUnitTests {
     }
 
     @Test
+    @DisplayName("Should throw an error when deleting a non-existent product")
     void deleteProduct_ProductNonExistent_ThrowsException() {
         long fakeId = 25L;
         when(productRepo.existsById(fakeId)).thenReturn(false);
