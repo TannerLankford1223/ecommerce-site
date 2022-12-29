@@ -38,7 +38,9 @@ public class ProductServiceImpl implements ProductService {
         PageInfo pageInfo = PageInfo.builder()
                 .pageNumber(productPage.getNumber())
                 .totalCount(productPage.getTotalElements())
+                .totalPages(productPage.getTotalPages())
                 .hasNext(productPage.hasNext())
+                .hasPrev(productPage.hasPrevious())
                 .nextPage(productPage.hasNext() ? productPage.getNumber() + 1 : null)
                 .prevPage(productPage.hasPrevious() ? productPage.getNumber() - 1 : null)
                 .build();
