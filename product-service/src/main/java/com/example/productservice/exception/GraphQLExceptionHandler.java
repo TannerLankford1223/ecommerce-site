@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Custom Exception Handler for Http Responses
+ * Custom Exception Handler for GraphQL
  *
  * @author TannnerLankford1223
  * @since 2022-11-30
@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class GraphQLExceptionHandler implements GraphQLErrorHandler {
 
     @Override
-    public List<GraphQLError> processErrors(List<GraphQLError> list) {
-        return list.stream().map(this::getNested).collect(Collectors.toList());
+    public List<GraphQLError> processErrors(List<GraphQLError> errors) {
+        return errors.stream().map(this::getNested).collect(Collectors.toList());
     }
 
     private GraphQLError getNested(GraphQLError error) {

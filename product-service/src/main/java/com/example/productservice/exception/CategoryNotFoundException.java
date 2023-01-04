@@ -1,6 +1,7 @@
 package com.example.productservice.exception;
 
 import graphql.ErrorClassification;
+import graphql.ErrorType;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class CategoryNotFoundException extends RuntimeException implements Graph
 
     @Override
     public ErrorClassification getErrorType() {
-        return null;
+        return ErrorType.DataFetchingException;
     }
 
     @Override

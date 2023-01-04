@@ -10,8 +10,11 @@ import java.util.List;
 
 @Getter
 public class ProductExistsException extends RuntimeException implements GraphQLError {
-    public ProductExistsException(String productname) {
-        super("Product with product name: " + productname + " exists.");
+
+    private final String productName;
+    public ProductExistsException(String productName) {
+        super("Product with product name: " + productName + " exists.");
+        this.productName = productName;
     }
 
     @Override
@@ -21,6 +24,6 @@ public class ProductExistsException extends RuntimeException implements GraphQLE
 
     @Override
     public ErrorClassification getErrorType() {
-        return ErrorType.ValidationError;
+        return ErrorType.DataFetchingException;
     }
 }

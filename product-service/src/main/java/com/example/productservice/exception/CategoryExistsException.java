@@ -22,6 +22,6 @@ public class CategoryExistsException extends RuntimeException implements GraphQL
 
     @Override
     public ErrorClassification getErrorType() {
-        return ErrorType.ValidationError;
+        return ErrorType.DataFetchingException;
     }
 }
