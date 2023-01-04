@@ -5,6 +5,7 @@ import graphql.execution.instrumentation.InstrumentationContext;
 import graphql.execution.instrumentation.SimpleInstrumentation;
 import graphql.execution.instrumentation.SimpleInstrumentationContext;
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,9 @@ import java.time.Instant;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class RequestLoggingInstrumentation extends SimpleInstrumentation {
-    private final Clock clock = Clock.systemDefaultZone();
-
-    private static String CORRELATION_ID = "correlation_id";
+    private final Clock clock;
 
     @Override
     public InstrumentationContext<ExecutionResult> beginExecution(InstrumentationExecutionParameters parameters) {
