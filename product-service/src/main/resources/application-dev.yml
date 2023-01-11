@@ -1,8 +1,10 @@
 server:
   shutdown: graceful
-  port: 9000
+  port: 8000
 
 spring:
+  application:
+    name: product-service
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://product-service-db:5432/product
@@ -23,14 +25,26 @@ graphql:
       Authorization: Bearer TOKEN
   extended-scalars: NonNegativeInt, NonNegativeFloat
 
-okta:
-  oauth2:
-    client-id: ${ENV_OKTA_CLIENT_ID}
-    issuer: ${ENV_OKTA_ISSUER_URL}
-
 voyager:
   enabled: true
 
 logging:
-  pattern:
-    console: -%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{correlation_id}){red} %m%n%wEx
+  level:
+    com:
+    org:
+      springframework: debug
+      hibernate: debug
+    root: info
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: *
