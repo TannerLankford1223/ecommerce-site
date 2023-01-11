@@ -3,11 +3,11 @@ package com.example.productservice.resolver.mutation;
 import com.example.productservice.model.Category;
 import com.example.productservice.service.CategoryService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
 
 @Component
 @Validated
