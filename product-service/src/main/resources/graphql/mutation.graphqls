@@ -3,7 +3,7 @@ scalar NonNegativeFloat
 input NewProduct {
     productName: String!
     price: NonNegativeFloat!
-    description: String
+    description: String!
     category: String!
 }
 
