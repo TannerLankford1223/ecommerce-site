@@ -1,17 +1,16 @@
 package com.example.productservice.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
 public class NewProduct {
     @NotBlank(message = "Product must have a name")
     private String productName;
@@ -24,4 +23,5 @@ public class NewProduct {
 
     @NotNull(message = "Product must have a category")
     private String category;
+
 }

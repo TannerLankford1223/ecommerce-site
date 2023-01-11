@@ -1,12 +1,14 @@
 package com.example.productservice.dto;
 
-import lombok.Builder;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Optional;
 
+//@Builder
 @Builder
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class SearchRequest {
     private String searchTerm;
 
