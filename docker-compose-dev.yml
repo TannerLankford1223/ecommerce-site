@@ -1,20 +1,87 @@
 version: "3.9"
 
-# This Docker-Compose file creates databases for each service and a RabbitMQ container as well as any tools used for
-# testing and QA. Ports are exposed, so they can be used by locally ran instances of the backend services for
-# development.
+# This Docker-Compose file is used for testing and QA.
+
+volumes:
+  products_db_vol:
+  keycloak_db_vol:
+  SonarQube_data:
+  SonarQube_extensions:
+  SonarQube_logs:
+  sonar_db:
+  sonar_db_data:
+
+networks:
+  rabbitmq:
+    driver: bridge
+  auth:
+    driver: bridge
+  sonar:
+    driver: bridge
+
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: "keycloak"
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+      KC_DB_URL: "jdbc:postgresql://keycloak-db:5432/keycloak"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    volumes:
+      - ./realms:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-db
+    networks:
+      - auth
+
+  keycloak-db:
+    image: postgres:latest
+    container_name: "keycloak-db"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - keycloak_db_vol:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - auth
+
+  products-service:
+    build:
+      context: ./product-service
+      dockerfile: DockerFile.dev
+    environment:
+      KEYCLOAK_URI: http://keycloak/8080
+    volumes:
+      - ./product-service:/app
+      - ~/.m2:/root/.m2
+    ports:
+      - "8000:8000"
+    depends_on:
+      - products-service-db
+
   products-service-db:
-    image: postgres:14
+    image: postgres:latest
     container_name: "product-service-db"
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: product
     volumes:
-      - db-data-dev:/var/lib/postgresql/data/
+      - products_db_vol:/var/lib/postgresql/data/
     ports:
-      - "5432:5432"
+      - "5433:5432"
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: "rabbitmq"
@@ -37,9 +104,11 @@ services:
       - SonarQube_logs:/opt/SonarQube/logs
     ports:
       - "9000:9000"
+    networks:
+      - sonar
 
   sonar-db:
-    image: postgres:14
+    image: postgres:latest
     container_name: "sonar-db"
     environment:
       POSTGRES_USER: ${SONAR_USER}
@@ -48,18 +117,6 @@ services:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
     ports:
-      - "5431:5432"
-
-
-volumes:
-  db-data-dev:
-    driver: local
-  SonarQube_data:
-  SonarQube_extensions:
-  SonarQube_logs:
-  sonar_db:
-  sonar_db_data:
-
-networks:
-  rabbitmq:
-    driver: bridge
+      - "5434:5432"
+    networks:
+      - sonar
