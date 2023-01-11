@@ -12,12 +12,12 @@
       },
       "products": [
         {
-          "id": "8",
+          "id": "12",
           "productName": "Black Pants",
           "price": 31.99,
           "description": "A black pair of pants",
           "category": {
-            "id": "2",
+            "id": "11",
             "categoryName": "Pants"
           }
         }

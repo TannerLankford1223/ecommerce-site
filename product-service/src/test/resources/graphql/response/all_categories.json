@@ -2,15 +2,15 @@
   "data": {
     "allCategories": [
       {
-        "id": "1",
+        "id": "10",
         "categoryName": "Shirts"
       },
       {
-        "id": "2",
+        "id": "11",
         "categoryName": "Pants"
       },
       {
-        "id": "3",
+        "id": "12",
         "categoryName": "Jackets"
       }
     ]

@@ -1,12 +1,12 @@
 {
   "data":{
     "productById": {
-      "id": "1",
+      "id": "5",
       "productName": "Grey Shirt",
       "price": 25.0,
       "description": "A grey shirt",
       "category": {
-        "id": "1",
+        "id": "10",
         "categoryName": "Shirts"
       }
     }

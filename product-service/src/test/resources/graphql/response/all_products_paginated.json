@@ -12,32 +12,32 @@
       },
       "products": [
         {
-          "id": "7",
+          "id": "11",
           "productName": "Black Shirt",
           "price": 30.5,
           "description": "A black shirt",
           "category": {
-            "id": "1",
+            "id": "10",
             "categoryName": "Shirts"
           }
         },
         {
-          "id": "8",
+          "id": "12",
           "productName": "Black Pants",
           "price": 31.99,
           "description": "A black pair of pants",
           "category": {
-            "id": "2",
+            "id": "11",
             "categoryName": "Pants"
           }
         },
         {
-          "id": "9",
+          "id": "13",
           "productName": "Green Jacket",
           "price": 43.99,
           "description": "A green jacket",
           "category": {
-            "id": "3",
+            "id": "12",
             "categoryName": "Jackets"
           }
         }

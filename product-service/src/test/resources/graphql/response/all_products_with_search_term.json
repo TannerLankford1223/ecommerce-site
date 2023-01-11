@@ -12,22 +12,22 @@
       },
       "products": [
         {
-          "id": "1",
+          "id": "5",
           "productName": "Grey Shirt",
           "price": 25.0,
           "description": "A grey shirt",
           "category": {
-            "id": "1",
+            "id": "10",
             "categoryName": "Shirts"
           }
         },
         {
-          "id": "5",
+          "id": "9",
           "productName": "Grey Pants",
           "price": 33.0,
           "description": "A grey pair of pants",
           "category": {
-            "id": "2",
+            "id": "11",
             "categoryName": "Pants"
           }
         }

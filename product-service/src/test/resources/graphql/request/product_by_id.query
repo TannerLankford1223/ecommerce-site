@@ -1,5 +1,5 @@
 query GET_PRODUCT_BY_ID {
-    productById(productId: 1) {
+    productById(productId: 5) {
         id
         productName
         price
