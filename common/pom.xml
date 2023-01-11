@@ -4,27 +4,28 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.example</groupId>
-		<artifactId>ecommerce-site</artifactId>
+		<artifactId>service-discovery</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<artifactId>ecommerce-common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ecommerce-common</name>
-	<description>Common dependencies for microservices</description>
+	<description>ecommerce-common</description>
 
 	<properties>
-		<eureka.version>3.1.4</eureka.version>
+		<java.version>17</java.version>
+		<spring-cloud.version>3.1.4</spring-cloud.version>
+		<spring-addons.version>6.0.9</spring-addons.version>
 		<graphql-tools.version>13.0.2</graphql-tools.version>
-		<graphql.version>15.0.0</graphql.version>
+		<graphql.version>14.1.0</graphql.version>
 		<graphql-visualization.version>11.1.0</graphql-visualization.version>
 		<graphql-extended-scalars.version>19.1</graphql-extended-scalars.version>
-		<sleuth.version>3.1.5</sleuth.version>
-		<spring-security-oauth2.version>2.6.8</spring-security-oauth2.version>
-		<spring-addons.version>6.0.10</spring-addons.version>
+		<logback-json.version>0.1.5</logback-json.version>
+		<logback-jackson.version>0.1.5</logback-jackson.version>
+		<jackson-databind.version>2.13.3</jackson-databind.version>
 	</properties>
-
 	<dependencies>
 		<!-- Spring Dependencies -->
 		<dependency>
@@ -47,14 +48,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<version>${eureka.version}</version>
+			<version>${spring-cloud.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -67,6 +68,12 @@
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 			<version>5.0.0</version>
+		</dependency>
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<!-- GraphQL -->
 		<dependency>
@@ -95,6 +102,12 @@
 			</exclusion>
 		</exclusions>
 		</dependency>
+		<!-- Oauth2 -->
+		<dependency>
+			<groupId>com.c4-soft.springaddons</groupId>
+			<artifactId>spring-addons-webmvc-jwt-resource-server</artifactId>
+			<version>${spring-addons.version}</version>
+		</dependency>
 		<!-- Monitoring -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -105,7 +118,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
-			<version>${sleuth.version}</version>
+			<version>${spring-cloud.version}</version>
 		</dependency>
 		<!-- Testing -->
 		<dependency>
@@ -118,11 +131,18 @@
 			<artifactId>graphql-spring-boot-starter-test</artifactId>
 			<version>${graphql.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.c4-soft.springaddons</groupId>
+			<artifactId>spring-addons-oauth2-test</artifactId>
+			<version>${spring-addons.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
 				<version>${springboot.version}</version>
@@ -148,21 +168,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>4.9.10</version>
-				<configuration>
-					<failOnNoGitDirectory>false</failOnNoGitDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
