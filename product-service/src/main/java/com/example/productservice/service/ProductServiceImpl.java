@@ -1,6 +1,6 @@
 package com.example.productservice.service;
 
-import com.example.productservice.dto.NewProduct;
+import com.example.productservice.dto.ProductDTO;
 import com.example.productservice.dto.PageInfo;
 import com.example.productservice.dto.ProductSearchResult;
 import com.example.productservice.dto.SearchRequest;
@@ -20,6 +20,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+
 import java.util.Optional;
 
 @Service
@@ -58,19 +59,16 @@ public class ProductServiceImpl implements ProductService {
             log.info("Retrieving products that contain the term: {}", searchTerm.get());
             return productRepo.findByProductNameContaining(searchTerm.get(), pageable);
         } else if (categoryName.isPresent()) {
-            Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName.get());
-            if (categoryOpt.isEmpty()) {
-                throw new CategoryNotFoundException(categoryName.get());
-            }
+            Category category = getCategory(categoryName.get());
 
             if (searchTerm.isPresent()) {
                 log.info("Retrieving products that contain the term: {} and the category: {}", searchTerm.get(),
-                        categoryName.get());
-                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm.get(), categoryOpt.get(),
+                        category.getCategoryName());
+                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm.get(), category,
                         pageable);
             } else {
                 log.info("Retrieving products with category: {}", categoryName.get());
-                return productRepo.findByCategory(categoryOpt.get(), pageable);
+                return productRepo.findByCategory(category, pageable);
             }
         } else {
             return productRepo.findAll(pageable);
@@ -91,23 +89,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product addProduct(NewProduct newProduct) {
-        if (productRepo.existsProductByProductName(newProduct.getProductName())) {
-            throw new ProductExistsException(newProduct.getProductName());
+    public Product addProduct(ProductDTO productDTO) {
+        if (productRepo.existsProductByProductName(productDTO.getProductName())) {
+            throw new ProductExistsException(productDTO.getProductName());
         }
 
-        String categoryName = newProduct.getCategory();
-        Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
-
-        if (categoryOpt.isEmpty()) {
-            throw new CategoryNotFoundException(categoryName);
-        }
+        Category category = getCategory(productDTO.getCategory());
 
         Product createdProduct = Product.builder()
-                .productName(newProduct.getProductName())
-                .price(newProduct.getPrice())
-                .description(newProduct.getDescription())
-                .category(categoryOpt.get())
+                .productName(productDTO.getProductName())
+                .price(productDTO.getPrice())
+                .description(productDTO.getDescription())
+                .category(category)
                 .build();
 
         Product savedProduct = productRepo.save(createdProduct);
@@ -117,6 +110,32 @@ public class ProductServiceImpl implements ProductService {
         // TODO: Send message to inventory-service via RabbitMQ
 
         return savedProduct;
+    }
+
+    @Transactional
+    @Override
+    public Product updateProduct(ProductDTO productDTO) {
+        Optional<Product> productOpt = productRepo.findByProductName(productDTO.getProductName());
+
+        if (productOpt.isEmpty()) {
+            addProduct(productDTO);
+        }
+
+        Category category = getCategory(productDTO.getCategory());
+
+        Product updatedProduct = Product.builder()
+                .id(productOpt.get().getId())
+                .productName(productDTO.getProductName())
+                .price(productDTO.getPrice())
+                .description(productDTO.getDescription())
+                .category(category)
+                .build();
+
+        productRepo.save(updatedProduct);
+
+        log.info("Product: {} updated", updatedProduct.getId());
+
+        return updatedProduct;
     }
 
     @Transactional
@@ -135,7 +154,16 @@ public class ProductServiceImpl implements ProductService {
 
         // TODO: Send message to inventory-service via RabbitMQ
 
-        // Return the product ID, if nothing goes wrong, for caching purposes
         return productId;
+    }
+
+    private Category getCategory(String categoryName) {
+        Optional<Category> categoryOpt = categoryRepo.findByCategoryName(categoryName);
+
+        if (categoryOpt.isEmpty()) {
+            throw new CategoryNotFoundException(categoryName);
+        }
+
+        return categoryOpt.get();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.productservice.service;
 
-import com.example.productservice.dto.NewProduct;
+import com.example.productservice.dto.ProductDTO;
 import com.example.productservice.dto.ProductSearchResult;
 import com.example.productservice.dto.SearchRequest;
 import com.example.productservice.exception.CategoryNotFoundException;
@@ -135,20 +135,20 @@ public class ProductServiceUnitTests {
     @DisplayName("Should save a new product to the database")
     void addNewProduct_AddedSuccessfully() {
         String categoryName = "Shirts";
-        NewProduct newProduct = NewProduct.builder()
-                .productName("NewProduct")
+        ProductDTO productDTO = ProductDTO.builder()
+                .productName("New Product")
                 .price(BigDecimal.valueOf(24.99))
                 .description("a new product")
                 .category(categoryName)
                 .build();
 
-        Product savedProduct = new Product(5L, "NewProduct", BigDecimal.valueOf(24.99),
+        Product savedProduct = new Product(5L, "New Product", BigDecimal.valueOf(24.99),
                 "a new product", shirtCategory);
 
         when(categoryRepo.findByCategoryName(categoryName)).thenReturn(Optional.of(shirtCategory));
         when (productRepo.save(any())).thenReturn(savedProduct);
 
-        productService.addProduct(newProduct);
+        productService.addProduct(productDTO);
 
         verify(productRepo, times(1)).save(any());
     }
@@ -156,7 +156,7 @@ public class ProductServiceUnitTests {
     @Test
     @DisplayName("Should throw an error when adding a duplicate product")
     void addNewProduct_ProductExists_ThrowsException() {
-        NewProduct dupProduct = NewProduct.builder()
+        ProductDTO dupProduct = ProductDTO.builder()
                 .productName("Shirt")
                 .price(BigDecimal.valueOf(14.99))
                 .description("a new shirt")
@@ -171,7 +171,7 @@ public class ProductServiceUnitTests {
     @DisplayName("Should throw an error when adding a product with a non-existent category")
     void addNewProduct_CategoryNonExistent_ThrowsException() {
         String fakeCategory = "Fake";
-        NewProduct newProduct = NewProduct.builder()
+        ProductDTO productDTO = ProductDTO.builder()
                 .productName("Fake")
                 .price(BigDecimal.valueOf(100.00))
                 .description("a fake product")
@@ -180,7 +180,28 @@ public class ProductServiceUnitTests {
 
         when(categoryRepo.findByCategoryName(fakeCategory)).thenReturn(Optional.empty());
 
-        assertThrows(CategoryNotFoundException.class, () -> productService.addProduct(newProduct));
+        assertThrows(CategoryNotFoundException.class, () -> productService.addProduct(productDTO));
+    }
+
+    @Test
+    @DisplayName("Should update a product successfully")
+    void updateProduct_Success() {
+        ProductDTO productDTO = ProductDTO.builder()
+                .productName(shirt.getProductName())
+                .price(shirt.getPrice())
+                .description("A teal shirt")
+                .category("Shirts")
+                .build();
+
+        when(productRepo.findByProductName(productDTO.getProductName())).thenReturn(Optional.of(shirt));
+        when(categoryRepo.findByCategoryName(productDTO.getCategory())).thenReturn(Optional.of(shirtCategory));
+
+       Product product = productService.updateProduct(productDTO);
+
+        verify(productRepo, times(1)).save(any());
+        assertThat(product.getProductName()).isEqualTo(shirt.getProductName());
+        assertThat(product.getId()).isEqualTo(shirt.getId());
+        assertThat(product.getDescription()).isEqualTo(productDTO.getDescription());
     }
 
     @Test

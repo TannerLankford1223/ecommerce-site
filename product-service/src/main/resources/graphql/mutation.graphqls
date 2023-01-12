@@ -1,6 +1,6 @@
 scalar NonNegativeFloat
 
-input NewProduct {
+input ProductDTO {
     productName: String!
     price: NonNegativeFloat!
     description: String!
@@ -9,7 +9,9 @@ input NewProduct {
 
 type Mutation {
     # Add a new product
-    addProduct(newProduct: NewProduct!): Product!
+    addProduct(productDTO: ProductDTO!): Product!
+    # Update an existing product
+    updateProduct(productDTO: ProductDTO!): Product!
     # Delete a product
     deleteProduct(productId: ID!): ID!
     # Add a new category
