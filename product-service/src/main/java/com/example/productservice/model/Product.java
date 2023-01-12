@@ -18,7 +18,7 @@ public class Product {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", unique = true)
     private String productName;
 
     @Column(name = "price")
