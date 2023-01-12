@@ -1,0 +1,11 @@
+{
+  "errors": [
+    {
+      "message": "Product with product name: Grey Shirt exists.",
+      "extensions": {
+        "classification": "DataFetchingException"
+      }
+    }
+  ],
+  "data": null
+}

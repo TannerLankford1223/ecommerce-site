@@ -1,0 +1,3 @@
+ mutation DELETE_CATEGORY {
+    deleteCategory(categoryId: 13)
+ }

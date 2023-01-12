@@ -1,0 +1,11 @@
+{
+  "errors": [
+    {
+      "message": "Category with name: Shirts exists.",
+      "extensions": {
+        "classification": "DataFetchingException"
+      }
+    }
+  ],
+  "data": null
+}

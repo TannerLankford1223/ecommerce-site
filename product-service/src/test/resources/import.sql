@@ -1,6 +1,7 @@
 INSERT INTO category VALUES (10, 'Shirts');
 INSERT INTO category VALUES (11, 'Pants');
 INSERT INTO category VALUES (12, 'Jackets');
+INSERT INTO category VALUES (13, 'Empty Category');
 
 INSERT INTO product VALUES (5,'A grey shirt', 25.00, 'Grey Shirt', 10);
 INSERT INTO product VALUES (6, 'A blue pair of pants', 35.00, 'Blue Pants', 11);

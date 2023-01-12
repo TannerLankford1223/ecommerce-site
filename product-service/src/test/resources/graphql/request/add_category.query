@@ -1,0 +1,6 @@
+mutation ADD_CATEGORY {
+    addCategory(categoryName: "New Category") {
+        id
+        categoryName
+    }
+}

@@ -1,0 +1,3 @@
+mutation DELETE_CATEGORY_NON_EXISTENT_CATEGORY {
+    deleteCategory(categoryId: 300)
+}

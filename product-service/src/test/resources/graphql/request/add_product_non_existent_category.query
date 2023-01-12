@@ -1,0 +1,12 @@
+mutation ADD_PRODUCT_NON_EXISTENT_CATEGORY {
+    addProduct(productDTO: { productName: "New Pants", price: 33.50, description: "A new pair of pants", category: "Fake Category"  }) {
+        id
+        productName
+        price
+        description
+        category {
+            id
+            categoryName
+        }
+    }
+}

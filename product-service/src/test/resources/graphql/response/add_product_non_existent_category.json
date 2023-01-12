@@ -1,0 +1,12 @@
+{
+  "errors": [
+    {
+      "message": "Category with name: Fake Category not found.",
+      "extensions": {
+        "invalidField": "Fake Category",
+        "classification": "DataFetchingException"
+      }
+    }
+  ],
+  "data": null
+}

@@ -1,0 +1,12 @@
+mutation UPDATE_PRODUCT {
+    updateProduct(productDTO: { productName: "Blue Pants", price: 35.00, description: "A blue pair of pants (Updated)", category: "Pants"  }) {
+        id
+        productName
+        price
+        description
+        category {
+            id
+            categoryName
+        }
+    }
+}

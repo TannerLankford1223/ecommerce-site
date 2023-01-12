@@ -1,0 +1,6 @@
+mutation ADD_CATEGORY_CATEGORY_EXISTS {
+    addCategory(categoryName: "Shirts") {
+        id
+        categoryName
+    }
+}

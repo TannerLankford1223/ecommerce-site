@@ -1,0 +1,12 @@
+mutation ADD_PRODUCT {
+    addProduct(productDTO: { productName: "Pink Shirt", price: 32.50, description: "A pink shirt", category: "Shirts"  }) {
+        id
+        productName
+        price
+        description
+        category {
+            id
+            categoryName
+        }
+    }
+}

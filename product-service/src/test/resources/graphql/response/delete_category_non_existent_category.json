@@ -1,0 +1,12 @@
+{
+  "errors": [
+    {
+      "message": "Id: 300 not found",
+      "extensions": {
+        "invalidField": 300,
+        "classification": "ValidationError"
+      }
+    }
+  ],
+  "data": null
+}

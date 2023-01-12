@@ -1,0 +1,3 @@
+mutation DELETE_PRODUCT {
+    deleteProduct(productId: 300)
+}

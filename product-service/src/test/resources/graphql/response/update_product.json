@@ -1,0 +1,14 @@
+{
+  "data": {
+    "updateProduct": {
+      "id": "6",
+      "productName": "Blue Pants",
+      "price": 35.00,
+      "description": "A blue pair of pants (Updated)",
+      "category": {
+        "id": "11",
+        "categoryName": "Pants"
+      }
+    }
+  }
+}

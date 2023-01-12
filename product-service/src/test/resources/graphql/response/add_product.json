@@ -1,0 +1,14 @@
+{
+  "data":{
+    "addProduct": {
+      "id": "1",
+      "productName": "Pink Shirt",
+      "price" : 32.50,
+      "description": "A pink shirt",
+      "category": {
+        "id": "10",
+        "categoryName": "Shirts"
+      }
+    }
+  }
+}
