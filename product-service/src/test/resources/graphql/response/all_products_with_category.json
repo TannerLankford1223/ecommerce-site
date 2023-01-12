@@ -13,9 +13,9 @@
       "products": [
         {
           "id": "7",
-          "productName": "Red Jacket",
+          "productName": "red jacket",
           "price": 45.0,
-          "description": "A red jacket",
+          "description": "a red jacket",
           "category": {
             "id": "12",
             "categoryName": "Jackets"
@@ -23,9 +23,9 @@
         },
         {
           "id": "10",
-          "productName": "Blue Jacket",
+          "productName": "blue jacket",
           "price": 47.0,
-          "description": "A blue jacket",
+          "description": "a blue jacket",
           "category": {
             "id": "12",
             "categoryName": "Jackets"
@@ -33,9 +33,9 @@
         },
         {
           "id": "13",
-          "productName": "Green Jacket",
+          "productName": "green jacket",
           "price": 43.99,
-          "description": "A green jacket",
+          "description": "a green jacket",
           "category": {
             "id": "12",
             "categoryName": "Jackets"

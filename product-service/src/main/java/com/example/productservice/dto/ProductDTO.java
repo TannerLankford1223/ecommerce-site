@@ -2,7 +2,6 @@ package com.example.productservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -10,7 +9,6 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 public class ProductDTO {
     private String productName;
 
@@ -20,4 +18,19 @@ public class ProductDTO {
 
     private String category;
 
+    public String getProductName() {
+        return productName.toLowerCase();
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description.toLowerCase();
+    }
+
+    public String getCategory() {
+        return category;
+    }
 }

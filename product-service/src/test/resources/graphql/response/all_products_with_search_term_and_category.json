@@ -13,9 +13,9 @@
       "products": [
         {
           "id": "12",
-          "productName": "Black Pants",
+          "productName": "black pants",
           "price": 31.99,
-          "description": "A black pair of pants",
+          "description": "a black pair of pants",
           "category": {
             "id": "11",
             "categoryName": "Pants"

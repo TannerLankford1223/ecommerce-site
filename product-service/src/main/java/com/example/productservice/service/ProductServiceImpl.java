@@ -57,14 +57,14 @@ public class ProductServiceImpl implements ProductService {
 
         if (searchTerm.isPresent() && categoryName.isEmpty()) {
             log.info("Retrieving products that contain the term: {}", searchTerm.get());
-            return productRepo.findByProductNameContaining(searchTerm.get(), pageable);
+            return productRepo.findByProductNameContaining(searchTerm.get().toLowerCase(), pageable);
         } else if (categoryName.isPresent()) {
             Category category = getCategory(categoryName.get());
 
             if (searchTerm.isPresent()) {
                 log.info("Retrieving products that contain the term: {} and the category: {}", searchTerm.get(),
                         category.getCategoryName());
-                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm.get(), category,
+                return productRepo.findProductsByProductNameContainingAndCategory(searchTerm.get().toLowerCase(), category,
                         pageable);
             } else {
                 log.info("Retrieving products with category: {}", categoryName.get());

@@ -44,10 +44,10 @@ public class ProductServiceUnitTests {
 
     Category shirtCategory = new Category(1L, "Shirt");
 
-    Product shirt = new Product(1L, "Shirt", BigDecimal.valueOf(20.00),
+    Product shirt = new Product(1L, "shirt", BigDecimal.valueOf(20.00),
             "a shirt", shirtCategory);
 
-    Product pants = new Product(2L, "Pants", BigDecimal.valueOf(34.99),
+    Product pants = new Product(2L, "pants", BigDecimal.valueOf(34.99),
             "a pair of pants", pantsCategory);
 
     Pageable pageable = PageRequest.of(0, 10);
@@ -80,7 +80,7 @@ public class ProductServiceUnitTests {
 
         List<Product> products = List.of(shirt);
 
-        when(productRepo.findByProductNameContaining(request.getSearchTerm().get(), pageable))
+        when(productRepo.findByProductNameContaining(request.getSearchTerm().get().toLowerCase(), pageable))
                 .thenReturn(new PageImpl<>(products));
 
         ProductSearchResult response = productService.getProducts(request);
@@ -122,7 +122,7 @@ public class ProductServiceUnitTests {
         List<Product> products = List.of(pants);
 
         when(categoryRepo.findByCategoryName(request.getCategory().get())).thenReturn(Optional.of(pantsCategory));
-        when(productRepo.findProductsByProductNameContainingAndCategory(request.getSearchTerm().get(), pantsCategory,
+        when(productRepo.findProductsByProductNameContainingAndCategory(request.getSearchTerm().get().toLowerCase(), pantsCategory,
                 pageable)).thenReturn(new PageImpl<>(products));
 
         ProductSearchResult response = productService.getProducts(request);
@@ -162,7 +162,7 @@ public class ProductServiceUnitTests {
                 .description("a new shirt")
                 .category("Shirts")
                 .build();
-        when(productRepo.existsProductByProductName(shirt.getProductName())).thenReturn(true);
+        when(productRepo.existsProductByProductName(shirt.getProductName().toLowerCase())).thenReturn(true);
 
         assertThrows(ProductExistsException.class, () -> productService.addProduct(dupProduct));
     }
