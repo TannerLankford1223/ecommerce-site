@@ -133,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
 
         productRepo.save(updatedProduct);
 
-        log.info("Product: {} updated", updatedProduct.getId());
+        log.info("Product with ID: {} updated", updatedProduct.getId());
 
         return updatedProduct;
     }
