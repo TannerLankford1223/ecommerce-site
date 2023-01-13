@@ -1,0 +1,140 @@
+- changeSet:
+    id: insert-products
+    author: Tanner Lankford
+    context: dev
+    changes:
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: grey shirt
+            - column:
+                name: price
+                value: 25.00
+            - column:
+                name: description
+                value: a grey shirt
+            - column:
+                name: category_id
+                value: 1
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: blue pants
+            - column:
+                name: price
+                value: 35.00
+            - column:
+                name: description
+                value: a blue pair of pants
+            - column:
+                name: category_id
+                value: 2
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: red jacket
+            - column:
+                name: price
+                value: 45.00
+            - column:
+                name: description
+                value: a red jacket
+            - column:
+                name: category_id
+                value: 3
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: blue shirt
+            - column:
+                name: price
+                value: 23.99
+            - column:
+                name: description
+                value: a blue shirt
+            - column:
+                name: category_id
+                value: 1
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: grey pants
+            - column:
+                name: price
+                value: 33.00
+            - column:
+                name: description
+                value: a grey pair of pants
+            - column:
+                name: category_id
+                value: 2
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: blue jacket
+            - column:
+                name: price
+                value: 47.00
+            - column:
+                name: description
+                value: a blue jacket
+            - column:
+                name: category_id
+                value: 3
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: black shirt
+            - column:
+                name: price
+                value: 30.50
+            - column:
+                name: description
+                value: a black shirt
+            - column:
+                name: category_id
+                value: 1
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: black pants
+            - column:
+                name: price
+                value: 31.99
+            - column:
+                name: description
+                value: a black pair of pants
+            - column:
+                name: category_id
+                value: 2
+      - insert:
+          tableName: product
+          columns:
+            - column:
+                name: product_name
+                value: green jacket
+            - column:
+                name: price
+                value: 43.99
+            - column:
+                name: description
+                value: a green jacket
+            - column:
+                name: category_id
+                value: 3

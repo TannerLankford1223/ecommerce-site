@@ -9,6 +9,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  liquibase:
+    enabled: false
 
 eureka:
   client:

@@ -24,7 +24,7 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne

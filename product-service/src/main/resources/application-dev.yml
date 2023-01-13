@@ -14,6 +14,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: false
+    show-sql: true
+  liquibase:
+    change-log: "classpath:db/changelog/db.changelog-master.yml"
+    enabled: true
+    parameters:
+      textColumnType: TEXT
+    contexts: dev
 
 graphql:
   servlet:
@@ -34,6 +42,7 @@ logging:
     org:
       springframework: debug
       hibernate: debug
+    "liquibase": info
     root: info
 
 management:

@@ -1,0 +1,23 @@
+- changeSet:
+    id: insert-categories
+    author: Tanner Lankford
+    context: dev
+    changes:
+      - insert:
+          tableName: category
+          columns:
+            - column:
+                name: category_name
+                value: Shirts
+      - insert:
+          tableName: category
+          columns:
+            - column:
+                name: category_name
+                value: Pants
+      - insert:
+          tableName: category
+          columns:
+            - column:
+                name: category_name
+                value: Jackets

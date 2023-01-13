@@ -1,0 +1,44 @@
+databaseChangelog:
+  - changeSet:
+      id: create-product-table
+      author: Tanner Lankford
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: product
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                  name: product_name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: NUMERIC
+              - column:
+                  constraints:
+                    nullable: false
+                  name: description
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_category
+                    references: category(id)
+                  name: category_id
+                  type: BIGINT
+            tableName: product

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changelog/create-product-table.yml
+  - include:
+      file: classpath:db/changelog/insert-products.yml
+  - include:
+      file: classpath:db/changelog/create-category-table.yml
+  - include:
+      file: classpath:db/changelog/insert-categories.yml
